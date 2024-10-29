@@ -8,3 +8,5 @@ volumes
 *.pb
 node_modules
 *.xcodeproj
+*.xcframework
+*.so
