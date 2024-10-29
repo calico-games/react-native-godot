@@ -1,0 +1,18 @@
+{
+  "editor.tabSize": 2,
+  "[swift]": {
+    "editor.tabSize": 4
+  },
+  "[objective-c]": {
+    "editor.tabSize": 4
+  },
+  "[objective-cpp]": {
+    "editor.tabSize": 4
+  },
+  "[java]": {
+    "editor.tabSize": 4
+  },
+  "files.associations": {
+    "memory": "cpp"
+  },
+}

@@ -1,0 +1,5 @@
+framework module ReactNativeGodot {
+  umbrella header "ReactNativeGodot.h"
+  export *
+  module * { export * }
+}

@@ -1,0 +1,280 @@
+import java.nio.file.Paths
+import org.apache.tools.ant.taskdefs.condition.Os
+
+buildscript {
+  // The Android Gradle plugin is only required when opening the android folder stand-alone.
+  // This avoids unnecessary downloads and potential conflicts when the library is included as a
+  // module dependency in an application project.
+  // ref: https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
+  if (project == rootProject) {
+    repositories {
+      google()
+    }
+    dependencies {
+      // This should reflect the Gradle plugin version used by
+      // the minimum React Native version supported.
+      classpath 'com.android.tools.build:gradle:3.4.1'
+    }
+  }
+}
+
+def reactNativeArchitectures() {
+  def value = project.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
+static def findNodeModules(baseDir) {
+  def basePath = baseDir.toPath().normalize()
+  // Node's module resolution algorithm searches up to the root directory,
+  // after which the base path will be null
+  while (basePath) {
+    def nodeModulesPath = Paths.get(basePath.toString(), "node_modules")
+    def reactNativePath = Paths.get(nodeModulesPath.toString(), "react-native")
+    if (nodeModulesPath.toFile().exists() && reactNativePath.toFile().exists()) {
+      return nodeModulesPath.toString()
+    }
+    basePath = basePath.getParent()
+  }
+  throw new GradleException("react-native-engine: Failed to find node_modules/ path!")
+}
+
+def nodeModules = findNodeModules(projectDir)
+logger.warn("react-native-engine: node_modules/ found at: ${nodeModules}")
+
+def sourceBuild = false
+def defaultDir
+
+if (rootProject.ext.has('reactNativeAndroidRoot')) {
+  defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
+} else if (findProject(':ReactAndroid') != null) {
+  sourceBuild = true
+  defaultDir = project(':ReactAndroid').projectDir
+} else {
+  defaultDir = file("$nodeModules/react-native")
+}
+
+if (!defaultDir.exists()) {
+    throw new GradleException(
+      "${project.name}: React Native android directory (node_modules/react-native/android) does not exist! Resolved node_modules to: ${nodeModules}"
+    )
+}
+
+def buildType = "debug"
+if (gradle.startParameter.taskRequests.args[0].toString().contains("Release")) {
+    buildType = "release"
+} else if (gradle.startParameter.taskRequests.args[0].toString().contains("Debug")) {
+    buildType = "debug"
+}
+
+def reactProperties = new Properties()
+file("$nodeModules/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
+def FULL_RN_VERSION =  (System.getenv("REACT_NATIVE_OVERRIDE_VERSION") ?: reactProperties.getProperty("VERSION_NAME"))
+def REACT_NATIVE_VERSION = FULL_RN_VERSION.split("\\.")[1].toInteger()
+def ENABLE_PREFAB = REACT_NATIVE_VERSION > 68
+
+def JS_RUNTIME = {
+    // Override JS runtime with environment variable
+    if (System.getenv("JS_RUNTIME")) {
+        return System.getenv("JS_RUNTIME")
+    }
+
+    // Check if Hermes is enabled in app setup
+    def appProject = rootProject.allprojects.find { it.plugins.hasPlugin('com.android.application') }
+    if (appProject?.hermesEnabled?.toBoolean() || appProject?.ext?.react?.enableHermes?.toBoolean()) {
+        return "hermes"
+    }
+
+    // Use JavaScriptCore (JSC) by default
+    return "jsc"
+}.call()
+
+def jsRuntimeDir = {
+    if (JS_RUNTIME == "hermes") {
+        return Paths.get("$nodeModules/react-native", "sdks", "hermes")
+    } else {
+        return Paths.get("$nodeModules/react-native", "ReactCommon", "jsi")
+    }
+}.call()
+
+def reactNativeRootDir = file("$nodeModules/react-native")
+
+logger.warn("[react-native-engine] RN Version: ${REACT_NATIVE_VERSION} / ${FULL_RN_VERSION}")
+logger.warn("[react-native-engine] isSourceBuild: ${sourceBuild}")
+logger.warn("[react-native-engine] buildType: ${buildType}")
+logger.warn("[react-native-engine] buildDir: ${buildDir}")
+logger.warn("[react-native-engine] node_modules: ${nodeModules}")
+logger.warn("[react-native-engine] Enable Prefab: ${ENABLE_PREFAB}")
+logger.warn("[react-native-engine] JS Runtime: ${JS_RUNTIME}")
+
+apply plugin: "com.android.library"
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
+}
+
+def getExtOrDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["Engine_" + name]
+}
+
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["Engine_" + name]).toInteger()
+}
+
+def supportsNamespace() {
+  def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
+  def major = parsed[0].toInteger()
+  def minor = parsed[1].toInteger()
+
+  // Namespace support was added in 7.3.0
+  return (major == 7 && minor >= 3) || major >= 8
+}
+
+def isNewArchitectureEnabled() {
+  // To opt-in for the New Architecture, you can either:
+  // - Set `newArchEnabled` to true inside the `gradle.properties` file
+  // - Invoke gradle with `-newArchEnabled=true`
+  // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
+def toPlatformFileString(String path) {
+  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+      path = path.replace(File.separatorChar, '/' as char)
+  }
+  return path
+}
+
+logger.warn("[react-native-engine] Thanks for using react-native-engine 💜")
+
+android {
+ if (supportsNamespace()) {
+    namespace "games.calico"
+
+    sourceSets {
+      main {
+        manifest.srcFile "src/main/AndroidManifestNew.xml"
+      }
+    }
+  }
+
+  ndkVersion getExtOrDefault("ndkVersion")
+  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+    versionCode 1
+    versionName "1.0"
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+    externalNativeBuild {
+      cmake {
+        cppFlags "-fexceptions", "-frtti", "-std=c++1y", "-DONANDROID"
+        abiFilters (*reactNativeArchitectures())
+        arguments '-DANDROID_STL=c++_shared',
+                  "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
+                  "-DNODE_MODULES_DIR=${nodeModules}",
+                  "-DREACT_NATIVE_DIR=${toPlatformFileString(reactNativeRootDir.path)}",
+                  "-DJS_RUNTIME=${JS_RUNTIME}",
+                  "-DJS_RUNTIME_DIR=${jsRuntimeDir}"
+
+      }
+    }
+  }
+
+  buildFeatures {
+    prefab true
+    prefabPublishing true
+    buildConfig true
+  }
+
+  buildTypes {
+    debug {
+      // if you need to debug your native module in Android Studio, this
+      // will prevent Gradle from stripping out the native symbols that
+      // are needed
+      packagingOptions {
+        doNotStrip '../libs/android/*/libengine.so'
+        jniLibs.useLegacyPackaging = true
+        excludes = [
+          "META-INF",
+          "META-INF/**",
+          "**/libc++_shared.so",
+          "**/libfbjni.so",
+          "**/libjsi.so",
+          "**/libfolly_json.so",
+          "**/libfolly_runtime.so",
+          "**/libglog.so",
+          "**/libhermes.so",
+          "**/libhermes-executor-debug.so",
+          "**/libhermes_executor.so",
+          "**/libreactnativejni.so",
+          "**/libturbomodulejsijni.so",
+          "**/libreact_nativemodule_core.so",
+          "**/libjscexecutor.so",
+          "**/libv8executor.so",
+        ]
+      }
+
+      ndk {
+        debugSymbolLevel 'full'
+      }
+
+      externalNativeBuild {
+        cmake {
+          if (JS_RUNTIME == "hermes") {
+            arguments "-DHERMES_ENABLE_DEBUGGER=1"
+          } else {
+            arguments "-DHERMES_ENABLE_DEBUGGER=0"
+          }
+        }
+      }
+    }
+
+    release {
+      minifyEnabled false
+
+      externalNativeBuild {
+        cmake {
+          arguments "-DHERMES_ENABLE_DEBUGGER=0"
+        }
+      }
+    }
+  }
+
+  lintOptions {
+    disable "GradleCompatible"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  sourceSets.main {
+    jniLibs {
+      srcDirs += ['../libs/android']
+    }
+  }
+
+  externalNativeBuild {
+    cmake {
+      path("src/main/cpp/CMakeLists.txt")
+    }
+  }
+}
+
+repositories {
+  mavenCentral()
+  google()
+}
+
+dependencies {
+  // From node_modules
+  implementation "com.facebook.react:react-native:+"
+
+  implementation "com.facebook.react:react-android"
+  if (JS_RUNTIME == "hermes") {
+    implementation "com.facebook.react:hermes-android" // version substituted by RNGP
+  }
+}

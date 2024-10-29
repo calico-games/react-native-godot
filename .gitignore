@@ -1,0 +1,10 @@
+Derived
+target
+build
+.DS_Store
+volumes
+*.zip
+*.ipa
+*.pb
+node_modules
+*.xcodeproj

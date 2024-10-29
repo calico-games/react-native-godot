@@ -1,0 +1,1 @@
+export const GodotViewNativeId = {current: 1000};

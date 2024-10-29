@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/cube.pck",
+      "sha1": "e55b073942e0cb05956c49b976eee6716c833d41"
+    },
+    {
+      "path": "src/assets/earth.pck",
+      "sha1": "1d8d864d269657394d50b4bb69f841cc683ab0b4"
+    },
+    {
+      "path": "src/assets/project.godot",
+      "sha1": "37f3d943593e6104594064aa13ed0be13080ac7d"
+    }
+  ]
+}
