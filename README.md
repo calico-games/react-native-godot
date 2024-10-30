@@ -118,8 +118,6 @@ Be sure you have `/Applications/Godot.app` set on your machine, if you're using 
 
 - One last thing, add a `project.godot` in your assets with the pck, see in the example folder for more details.
 
-```gdscript
-
 ## Metro
 
 - You need to add the following to your `metro.config.js` in order to treat `.pck` files as assets and exclude them from being treated as source files.
@@ -161,7 +159,7 @@ Also, your pck file must be considered in the size of your app. Which can be qui
 
 - When importing a texture or 3D model, be sure you don't import them as `VRAM Compressed`, for some reason when exporting the pck file, it doesn't work properly. Might be a stupid mistake from our side.... 😅
 
-[<img src="screenshots/screenshot3.jpeg" alt="VRAM Compressed" align="center" width="200" hspace="2" vspace="10">](screenshots/screenshot3.jpeg)
+[<img src="screenshots/screenshot3.jpeg" alt="VRAM Compressed" align="center" width="200" hspace="2" vspace="10">](screenshots/screenshot3.png)
 
 - **Godot Variants**: We don't support all Godot variants yet, like Vector2, Vector3, etc. We only support the most common types for now, which should be enough for most use cases.
 
