@@ -11,6 +11,7 @@ export type GodotMessageEventHandler = (message: any) => void;
 type Source = ImageSourcePropType;
 export interface GodotViewProps extends ViewProps {
     source?: Source;
+    scene?: string;
     debug?: boolean;
     onMessage?: GodotMessageEventHandler;
 }

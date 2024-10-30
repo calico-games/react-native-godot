@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
     'libs/ios/ReactNativeGodot.xcframework',
   ]
 
-  # All iOS cpp/h files
+  # All iOS files
   s.source_files = [
     "ios/**/*.{h,hpp,c,cc,cpp,m,mm,swift}"
   ]

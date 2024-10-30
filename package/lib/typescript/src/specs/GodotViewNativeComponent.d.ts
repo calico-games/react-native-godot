@@ -1,4 +1,3 @@
-/// <reference types="react-native/types/modules/Codegen" />
 import type { ViewProps } from "react-native";
 export interface NativeProps extends ViewProps {
 }

@@ -14,11 +14,16 @@ export class GodotView extends React.Component<GodotViewProps> {
   constructor(props: GodotViewProps) {
     super(props);
     this._nativeID = GodotViewNativeId.current++;
-    const {source, onMessage} = props;
+    const {source, scene, onMessage} = props;
 
     if (source) {
       assertGodotViewApi();
       GodotViewApi.setJsiProperty(this._nativeID, "source", Image.resolveAssetSource(source as any).uri);
+    }
+
+    if (scene) {
+      assertGodotViewApi();
+      GodotViewApi.setJsiProperty(this._nativeID, "scene", scene);
     }
 
     if (onMessage) {
@@ -34,11 +39,16 @@ export class GodotView extends React.Component<GodotViewProps> {
   }
 
   componentDidUpdate(prevProps: GodotViewProps) {
-    const {source, onMessage} = this.props;
+    const {source, scene, onMessage} = this.props;
 
     if (source !== prevProps.source) {
       assertGodotViewApi();
       GodotViewApi.setJsiProperty(this._nativeID, "source", Image.resolveAssetSource(source as any).uri);
+    }
+
+    if (scene !== prevProps.scene) {
+      assertGodotViewApi();
+      GodotViewApi.setJsiProperty(this._nativeID, "scene", scene);
     }
 
     if (prevProps.onMessage === undefined && onMessage !== undefined) {
@@ -94,7 +104,6 @@ export class GodotView extends React.Component<GodotViewProps> {
       <NativeGodotView
         collapsable={false}
         nativeID={`${this._nativeID}`}
-        debug={debug}
         {...viewProps}
       />
     );

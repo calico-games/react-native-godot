@@ -9,8 +9,8 @@ var _reactNative = require("react-native");
 var _GodotViewNativeComponent = _interopRequireDefault(require("../specs/GodotViewNativeComponent"));
 var _api = require("./api");
 var _GodotViewNativeId = require("./GodotViewNativeId");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 const NativeGodotView = _GodotViewNativeComponent.default;
 class GodotView extends _react.default.Component {
   constructor(props) {
@@ -18,11 +18,16 @@ class GodotView extends _react.default.Component {
     this._nativeID = _GodotViewNativeId.GodotViewNativeId.current++;
     const {
       source,
+      scene,
       onMessage
     } = props;
     if (source) {
       assertGodotViewApi();
       _api.GodotViewApi.setJsiProperty(this._nativeID, "source", _reactNative.Image.resolveAssetSource(source).uri);
+    }
+    if (scene) {
+      assertGodotViewApi();
+      _api.GodotViewApi.setJsiProperty(this._nativeID, "scene", scene);
     }
     if (onMessage) {
       assertGodotViewApi();
@@ -35,11 +40,16 @@ class GodotView extends _react.default.Component {
   componentDidUpdate(prevProps) {
     const {
       source,
+      scene,
       onMessage
     } = this.props;
     if (source !== prevProps.source) {
       assertGodotViewApi();
       _api.GodotViewApi.setJsiProperty(this._nativeID, "source", _reactNative.Image.resolveAssetSource(source).uri);
+    }
+    if (scene !== prevProps.scene) {
+      assertGodotViewApi();
+      _api.GodotViewApi.setJsiProperty(this._nativeID, "scene", scene);
     }
     if (prevProps.onMessage === undefined && onMessage !== undefined) {
       console.log('Setting onMessage');
@@ -94,8 +104,7 @@ class GodotView extends _react.default.Component {
     } = this.props;
     return /*#__PURE__*/_react.default.createElement(NativeGodotView, _extends({
       collapsable: false,
-      nativeID: `${this._nativeID}`,
-      debug: debug
+      nativeID: `${this._nativeID}`
     }, viewProps));
   }
 }

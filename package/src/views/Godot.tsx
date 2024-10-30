@@ -16,6 +16,7 @@ export const Godot = forwardRef<GodotView, GodotProps>(
     style,
     onLayout: _onLayout,
     source,
+    scene,
     debug,
     onMessage,
     ...props
@@ -31,6 +32,7 @@ export const Godot = forwardRef<GodotView, GodotProps>(
           style={style}
           onLayout={_onLayout}
           source={source}
+          scene={scene}
           debug={debug}
           onMessage={onMessage}
           {...props}

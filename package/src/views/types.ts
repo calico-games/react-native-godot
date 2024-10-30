@@ -15,6 +15,7 @@ type Source = ImageSourcePropType;
 
 export interface GodotViewProps extends ViewProps {
   source?: Source;
+  scene?: string;
   debug?: boolean;
   onMessage?: GodotMessageEventHandler;
 }
