@@ -14,3 +14,7 @@ $ yarn android
 # To pack your assets in the iOS/Android app (needed when updating assets)
 $ yarn asset
 ```
+
+## Test package locally
+
+Update the `react-native-godot` package to `link:../package/` instead.

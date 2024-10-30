@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Godot, GodotView} from 'react-native-godot';
 import axios from 'axios';
@@ -25,7 +25,15 @@ const EarthExample: React.FC = _props => {
     const unsubscribe = navigation.addListener('transitionStart', (e: any) => {
       if (e.data.closing) {
         GodotView.stopDrawing();
-      } else {
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('transitionEnd', (e: any) => {
+      if (!e.data.closing) {
         GodotView.startDrawing();
       }
     });
@@ -189,10 +197,14 @@ const EarthExample: React.FC = _props => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.loading} pointerEvents={'none'}>
+        <ActivityIndicator size="large" color="white" />
+      </View>
       <Godot
         ref={earthRef}
         style={styles.earth}
         source={require('@/assets/earth.pck')}
+        scene='res://main.tscn'
         onMessage={onMessage}
       />
       <View style={styles.countryInfo} pointerEvents={'none'}>
@@ -210,6 +222,7 @@ const EarthExample: React.FC = _props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'black',
   },
   earth: {
     flex: 1,
@@ -231,6 +244,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 26,
     marginTop: 2,
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgb(20, 20, 20)',
   },
 });
 
