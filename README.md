@@ -51,9 +51,13 @@ Take a look at the `example` folder for a full implem 👀.
 
 ### Godot variants
 
-All Godot variants are available in React Native, here is the list of all available variants:
-`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
-All methods and properties are available too, for example, you can use `Vector3(1, 2, 3).length()`.
+Godot variants are available in React Native, here is the list:
+`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`.
+
+For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can use normal JS types and it will be automatically converted to Godot variants!
+
+All methods and properties are available too, for instance, you can use `Vector3(1, 2, 3).length()`.
+Complete documentation is available at `https://docs.godotengine.org/en/stable/classes/index.html#variant-types`.
 
 ### React Native <-> Godot
 
