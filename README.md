@@ -17,7 +17,7 @@ Bring **Godot** to **React Native** 🔮.
 * 🏎️ Native C++ JSI performance
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
 * ✅ Supports old and new arch
-* 🙂 Support all Godot variants
+* 🙂 Support Godot Variants `AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
 
 ## Device Support
 
@@ -33,7 +33,7 @@ We'll ship that soon 😊
 
 ## Requirements
 
-* Godot 4.3 (`https://godotengine.org/`)
+* Godot 4.3 ([https://godotengine.org/](https://godotengine.org/))
 
 ## Installation
 
@@ -49,15 +49,15 @@ yarn add react-native-godot
 
 Take a look at the `example` folder for a full implem 👀.
 
-### Godot variants
+### Godot Variants
 
 Godot variants are available in React Native, here is the list:
 `AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`.
 
-For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can use normal JS types and it will be automatically converted to Godot variants!
+For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can use normal JS types and it will be automatically converted to Godot variants and vice versa.
 
 All methods and properties are available too, for instance, you can use `Vector3(1, 2, 3).length()`.
-Complete documentation is available at `https://docs.godotengine.org/en/stable/classes/index.html#variant-types`.
+Complete documentation is available at [https://docs.godotengine.org/en/stable/classes/index.html#variant-types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types).
 
 ### React Native <-> Godot
 
@@ -224,7 +224,7 @@ We're open to any contributions. Feel free to open an issue if you want to help 
 
 All the interesting stuff is located in a private repository so if you want to contribute, just send us an email at `team@calico.games`.
 You should have previous experiences of building the Godot Engine yourself, C++, and building blazing fast React Native libraries is a plus.
-Bazel (`https://github.com/bazelbuild/bazel`) is also used internally to build the library fyk.
+[Bazel](https://github.com/bazelbuild/bazel) is also used internally to build the library fyk.
 
 ## Copyright / License
 
@@ -242,5 +242,5 @@ For commercial licensing inquiries, please contact us at `team@calico.games`.
 
 ## Credits
 
-* Special thanks to all the contributors of the Godot Engine (`https://github.com/godotengine/godot`).
-* A big shoutout to Migeran (`https://github.com/migeran`) that helped us a lot to build this library.
+* Special thanks to all the contributors of the [Godot Engine](https://github.com/godotengine/godot).
+* A big shoutout to [Migeran](https://github.com/migeran) that helped us a lot to build this library.
