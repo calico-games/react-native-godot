@@ -67,7 +67,16 @@ You can send messages from React Native to Godot and receive messages from Godot
 * **Godot -> React Native**: You can receive messages from Godot in React Native using the `onMessage` prop.
 
 ```tsx
-// GodotProvider => <GodotProvider><Example /><GodotProvider/> is required to use Godot, it should be at the root of your app (the highest level is recommended. e.g. App.tsx)
+// ⚠️ IMPORTANT ⚠️
+// GodotProvider is required to initalize Godot properly
+// (See in the example folder for more details)
+//
+// <GodotProvider>
+//    <Example />
+// <GodotProvider/>
+//
+// It should be at the root of your app.
+// The highest level is recommended. e.g. App.tsx
 
 import React, {useRef} from 'react';
 import {Godot, GodotView, GodotProvider, useGodot} from 'react-native-godot';
