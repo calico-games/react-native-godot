@@ -1,5 +1,8 @@
 # React Native Godot
 
+[![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
+[![godot engine](https://img.shields.io/badge/Godot-4.3-blue)](https://godotengine.org/download)
+
 Bring **Godot** to **React Native** 🔮.
 
 ## Screenshots
@@ -9,11 +12,12 @@ Bring **Godot** to **React Native** 🔮.
 
 ### Features
 
-react-native-godot is a library that allows you to use Godot in your React Native app.
+**react-native-godot** is a library that allows you to use Godot in your React Native app.
 
 * 🏎️ Native C++ JSI performance
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
 * ✅ Supports old and new arch
+* 🙂 Support all Godot variants
 
 ## Device Support
 
@@ -45,23 +49,52 @@ yarn add react-native-godot
 
 Take a look at the `example` folder for a full implem 👀.
 
-### React Native implementation
+### Godot variants
+
+All Godot variants are available in React Native, here is the list of all available variants:
+`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
+All methods and properties are available too, for example, you can use `Vector3(1, 2, 3).length()`.
+
+### React Native <-> Godot
+
+You can send messages from React Native to Godot and receive messages from Godot in React Native.
+
+* **React Native -> Godot**: You can send messages from React Native to Godot using the `emitMessage` method.
+* **Godot -> React Native**: You can receive messages from Godot in React Native using the `onMessage` prop.
 
 ```tsx
 import React, {useRef} from 'react';
-import {Godot, GodotView} from 'react-native-godot';
+import {Godot, GodotView, GodotProvider, useGodot} from 'react-native-godot';
 
 const App = () => {
  const godotRef = useRef<GodotView>(null);
+ const {Vector3, Vector2} = useGodot(); 
+
+ useEffect(() => {
+    // Emit a message to Godot from React Native
+    godotRef.current?.emitMessage({
+      message: 'Hello from React Native!',
+      position: Vector3(1, 2, 3),
+    });
+
+    // Use Godot Vector3 and Vector2 variants
+    // All methods and properties are available too :)
+    console.log('Vector3 y:', Vector3(1, 2, 3).y);
+    console.log('Length', Vector2(3, 1).length());
+  }, []);
 
   return (
-    <Godot
-      ref={godotRef}
-      style={{flex: 1}}
-      source={require('./assets/game.pck')}
-      scene="res://main.tscn"
-      onMessage={(message) => console.log('Godot message:', message)}
-    />
+    {/* GodotProvider is required to use Godot, it should be at the root of your app (the highest level is recommended */}
+    <GodotProvider>
+      <Godot
+        ref={godotRef}
+        style={{flex: 1}}
+        source={require('./assets/game.pck')}
+        scene="res://main.tscn"
+        {/* Receive messages from Godot */}
+        onMessage={(message) => console.log('Godot message:', message)}
+      />
+    </GodotProvider>
   );
 };
 ```
@@ -87,10 +120,10 @@ func _input(event: InputEvent) -> void:
   var adjusted_position = adjust_for_window(event.position)
 
   if Engine.has_singleton("ReactNative"):
+    # Emit a message to React Native
     Engine.get_singleton("ReactNative").emit_message({
       "message": "Input event position",
-      "x": adjusted_position.x,
-      "y": adjusted_position.y
+      "pos": adjusted_position,
     })
 
 ## This function is used to adjust the screen position for the window.
@@ -170,16 +203,14 @@ Also, your pck file must be considered in the size of your app. Which can be qui
 
 [<img src="screenshots/screenshot3.png" alt="VRAM Compressed" align="center" width="200" hspace="2" vspace="10">](screenshots/screenshot3.png)
 
-* **Godot Variants**: We don't support all Godot variants yet, like Vector2, Vector3, etc. We only support the most common types for now, which should be enough for most use cases.
-
 * **PCK Asset Swapping**: For now, you can't swap the pck asset at runtime properly, you need to reopen the app to load a new pck asset. It seems to be a limitation of the Godot engine itself, but we're investigating this as it would be super useful to debug on device in almost real-time.
 
 ## TODO
 
 * [x] iOS support
 * [ ] Android support
-* [ ] Improve library size
-* [ ] Add support for all Godot variants
+* [x] Improve library size
+* [x] Add support for all Godot variants
 * [ ] Investigate PCK asset swapping
 * [ ] Add support for more Godot features
 

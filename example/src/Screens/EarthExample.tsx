@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Godot, GodotView} from 'react-native-godot';
+import {Godot, GodotView, useGodot} from 'react-native-godot';
 import axios from 'axios';
 import RNReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import SolarCalculator from '@/Utils/SolarCalculator';
@@ -20,6 +20,19 @@ const EarthExample: React.FC = _props => {
   const [timezone, setTimezone] = useState<string | null>(defaultTimezone);
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const offset = useRef(0);
+
+  const {Vector3, Vector2, Quaternion, Transform3D} = useGodot();
+
+  // Some examples
+  useEffect(() => {
+    const pos = Vector3(3, 0, 0);
+    console.log('Position:', pos);
+    console.log('Vector2:', Vector2(1, 1));
+    console.log('Length:', Vector2(3, 1).length());
+    console.log('Quaternion:', Quaternion(0, 0, 0, 1));
+    console.log('Transform3D origin:', Transform3D().origin);
+    console.log('Vector3 y:', Vector3(1, 2, 3).y);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('transitionStart', (e: any) => {

@@ -3,9 +3,9 @@ require_relative "./react-native-godot-utils.rb"
 
 # package.json
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
-version = package['version']
+version = package['version'].gsub(/dev-.*/, '')
 
-source = download_prebuilt(__dir__, package["version"])
+source = download_prebuilt(__dir__, version)
 
 Pod::Spec.new do |s|
   s.name         = "react-native-godot"
@@ -40,6 +40,6 @@ Pod::Spec.new do |s|
 
   # All iOS files
   s.source_files = [
-    "ios/**/*.{h,hpp,c,cc,cpp,m,mm,swift}"
+    'ios/GodotModule.mm',
   ]
 end

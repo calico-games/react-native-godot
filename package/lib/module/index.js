@@ -1,4 +1,3 @@
-import NativeGodotModule from "./specs/NativeGodotModule";
-NativeGodotModule.install();
-export * from "./views";
+export * from './views';
+export * from './GodotProvider';
 //# sourceMappingURL=index.js.map

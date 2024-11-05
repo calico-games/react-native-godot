@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var _NativeGodotModule = _interopRequireDefault(require("./specs/NativeGodotModule"));
 var _views = require("./views");
 Object.keys(_views).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -15,6 +14,15 @@ Object.keys(_views).forEach(function (key) {
     }
   });
 });
-function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
-_NativeGodotModule.default.install();
+var _GodotProvider = require("./GodotProvider");
+Object.keys(_GodotProvider).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _GodotProvider[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _GodotProvider[key];
+    }
+  });
+});
 //# sourceMappingURL=index.js.map

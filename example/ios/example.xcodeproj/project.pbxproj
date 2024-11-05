@@ -14,6 +14,7 @@
 		630DFD7AE621440BB58702B8 /* cube.pck in Resources */ = {isa = PBXBuildFile; fileRef = 44666CB6BD344C0C89726CF6 /* cube.pck */; };
 		6D295474B73A4C65A6708AA5 /* earth.pck in Resources */ = {isa = PBXBuildFile; fileRef = 6591D8C625E145D4A172F7A8 /* earth.pck */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		96D697622CD34109008FC432 /* ReactNativeGodot.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E79FFD2CD320C100270EE4 /* ReactNativeGodot.xcframework */; };
 		9D9E746DE25C408FB1BA6DA7 /* project.godot in Resources */ = {isa = PBXBuildFile; fileRef = 255906191360452FA1CAF0D2 /* project.godot */; };
 		F2051D322750828A58F73D7C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6D6D63580D84DB476010F438 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -25,15 +26,15 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = example/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = example/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = example/main.m; sourceTree = "<group>"; };
-		255906191360452FA1CAF0D2 /* project.godot */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = project.godot; path = ../src/assets/project.godot; sourceTree = "<group>"; };
+		255906191360452FA1CAF0D2 /* project.godot */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = project.godot; path = ../src/assets/project.godot; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.debug.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.debug.xcconfig"; sourceTree = "<group>"; };
-		44666CB6BD344C0C89726CF6 /* cube.pck */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = cube.pck; path = ../src/assets/cube.pck; sourceTree = "<group>"; };
+		44666CB6BD344C0C89726CF6 /* cube.pck */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = cube.pck; path = ../src/assets/cube.pck; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.release.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.release.xcconfig"; sourceTree = "<group>"; };
-		6591D8C625E145D4A172F7A8 /* earth.pck */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = earth.pck; path = ../src/assets/earth.pck; sourceTree = "<group>"; };
+		6591D8C625E145D4A172F7A8 /* earth.pck */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = earth.pck; path = ../src/assets/earth.pck; sourceTree = "<group>"; };
 		6D6D63580D84DB476010F438 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = example/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = example/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9602549E2C5693C10021CD2F /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MoltenVK.xcframework; path = "/Users/seb/Projects/react-native-godot/example/node_modules/react-native-godot/../../../package/libs/ios/MoltenVK.xcframework"; sourceTree = "<absolute>"; };
 		96E772B42BF79BD600B09EE0 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
+		96E79FFD2CD320C100270EE4 /* ReactNativeGodot.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ReactNativeGodot.xcframework; path = "/Users/seb/Projects/react-native-godot/example/node_modules/react-native-godot/../../../package/libs/ios/ReactNativeGodot.xcframework"; sourceTree = "<absolute>"; };
 		C992B1E8C02CE5C555DB33CB /* libPods-example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96D697622CD34109008FC432 /* ReactNativeGodot.xcframework in Frameworks */,
 				2D86C531EB428C1D7385AAF2 /* libPods-example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,7 +79,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9602549E2C5693C10021CD2F /* MoltenVK.xcframework */,
+				96E79FFD2CD320C100270EE4 /* ReactNativeGodot.xcframework */,
 				96E772B42BF79BD600B09EE0 /* hermes.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				C992B1E8C02CE5C555DB33CB /* libPods-example.a */,

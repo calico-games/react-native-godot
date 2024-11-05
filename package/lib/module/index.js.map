@@ -1,1 +1,1 @@
-{"version":3,"names":["NativeGodotModule","install"],"sourceRoot":"../../src","sources":["index.ts"],"mappings":"AAAA,OAAOA,iBAAiB,MAAM,2BAA2B;AAEzDA,iBAAiB,CAACC,OAAO,CAAC,CAAC;AAE3B,cAAc,SAAS","ignoreList":[]}
+{"version":3,"names":[],"sourceRoot":"../../src","sources":["index.ts"],"mappings":"AAAA,cAAc,SAAS;AACvB,cAAc,iBAAiB","ignoreList":[]}
