@@ -17,7 +17,7 @@ Bring **Godot** to **React Native** 🔮.
 * 🏎️ Native C++ JSI performance
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
 * ✅ Supports old and new arch
-* 🙂 Support Godot Variants `AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
+* 🙂 Support Godot Variants in React Native `AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
 
 ## Device Support
 
