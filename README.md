@@ -1,14 +1,19 @@
-# React Native Godot
+<picture>
+  <img alt="react-native-godot" src="./static/banner.png" />
+</picture>
+
+<br />
 
 [![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
 [![godot engine](https://img.shields.io/badge/Godot-4.3-blue)](https://godotengine.org/download)
 
 Bring **Godot** to **React Native** 🔮.
+Create immersive 3D experiences or interactive games directly within React Native, allowing for high-performance graphics and responsive interactions.
 
 ## Screenshots
 
-[<img src="screenshots/screenshot1.jpeg" alt="Multiple Cubes demo" align="center" width="200" hspace="2" vspace="10">](screenshots/screenshot1.jpeg)
-[<img src="screenshots/screenshot2.jpeg" alt="Earth demo" align="center" width="200" hspace="2" vspace="10">](screenshots/screenshot2.jpeg)
+[<img src="screenshots/screenshot1.jpeg" alt="Multiple Cubes demo" align="center" width="150" hspace="2" vspace="10">](screenshots/screenshot1.jpeg)
+[<img src="screenshots/screenshot2.jpeg" alt="Earth demo" align="center" width="150" hspace="2" vspace="10">](screenshots/screenshot2.jpeg)
 
 ### Features
 
@@ -17,7 +22,8 @@ Bring **Godot** to **React Native** 🔮.
 * 🏎️ Native C++ JSI performance
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
 * ✅ Supports old and new arch
-* 🙂 Support Godot Variants in React Native `AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
+* 🙂 Supports Godot Variants in React Native
+* 📦 Easy import of your Godot projects
 
 ## Device Support
 
