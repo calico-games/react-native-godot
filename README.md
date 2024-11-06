@@ -128,9 +128,9 @@ extends Node
 
 func _ready() -> void:
   if Engine.has_singleton("ReactNative"): # Always check if the ReactNative singleton exists
-    Engine.get_singleton("ReactNative").on_receive_message(_on_receive_message)
+    Engine.get_singleton("ReactNative").on_message(_on_message)
 
-func _on_receive_message(message: Dictionary) -> void:
+func _on_message(message: Dictionary) -> void:
   print("React Native message:", message)
 
 func _input(event: InputEvent) -> void:    
