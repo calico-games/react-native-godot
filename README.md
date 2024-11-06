@@ -17,8 +17,6 @@ Create immersive 3D experiences or interactive games directly within React Nativ
 
 ### Features
 
-**react-native-godot** is a library that allows you to use Godot in your React Native app.
-
 * 🏎️ Native C++ JSI performance
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
 * ✅ Supports old and new arch
