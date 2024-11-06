@@ -4,11 +4,13 @@
 
 <br />
 
-[![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
-[![godot engine](https://img.shields.io/badge/Godot-4.3-blue)](https://godotengine.org/download)
-
 Bring **Godot** to **React Native** 🔮.
 Create immersive 3D experiences or interactive games directly within React Native, allowing for high-performance graphics and responsive interactions.
+
+<br />
+
+[![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
+[![godot engine](https://img.shields.io/badge/Godot-4.3-blue)](https://godotengine.org/download)
 
 ## Screenshots
 
