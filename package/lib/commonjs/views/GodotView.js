@@ -52,7 +52,6 @@ class GodotView extends _react.default.Component {
       _api.GodotViewApi.setJsiProperty(this._nativeID, "scene", scene);
     }
     if (prevProps.onMessage === undefined && onMessage !== undefined) {
-      console.log('Setting onMessage');
       assertGodotViewApi();
       _api.GodotViewApi.setJsiProperty(this._nativeID, "onMessage", onMessage);
     }
@@ -72,6 +71,14 @@ class GodotView extends _react.default.Component {
   resume() {
     assertGodotViewApi();
     _api.GodotViewApi.resume(this._nativeID);
+  }
+
+  /**
+   * Resume the Godot view.
+   */
+  getRoot() {
+    assertGodotViewApi();
+    return _api.GodotViewApi.getRoot(this._nativeID);
   }
 
   /**
@@ -97,6 +104,14 @@ class GodotView extends _react.default.Component {
     assertGodotViewApi();
     _api.GodotViewApi.emitMessage(this._nativeID, message);
   }
+
+  /**
+   * Check if the Godot view is ready.
+   */
+  get isReady() {
+    assertGodotViewApi();
+    return _api.GodotViewApi.isReady(this._nativeID);
+  }
   render() {
     const {
       debug = false,
@@ -110,8 +125,8 @@ class GodotView extends _react.default.Component {
 }
 exports.GodotView = GodotView;
 const assertGodotViewApi = () => {
-  if (_api.GodotViewApi === null || _api.GodotViewApi.setJsiProperty === null || _api.GodotViewApi.pause === null || _api.GodotViewApi.resume === null) {
-    throw Error('Godot View Api was not found.');
+  if (_api.GodotViewApi === null || _api.GodotViewApi.setJsiProperty === null || _api.GodotViewApi.pause === null || _api.GodotViewApi.resume === null || _api.GodotViewApi.getRoot === null || _api.GodotViewApi.isReady === null) {
+    throw Error('Godot View API was not found.');
   }
 };
 //# sourceMappingURL=GodotView.js.map

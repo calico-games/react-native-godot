@@ -5,8 +5,8 @@ import {Vector3} from './Vector3';
 
 type AABBConstructor = {
   (): AABB;
-  (from: AABB): AABB;
-  (position: Vector3, size: Vector3): AABB;
+  (from_: AABB): AABB;
+  (position_: Vector3, size_: Vector3): AABB;
 
 };
 
@@ -19,30 +19,30 @@ export interface AABB {
   size: Vector3;
 
   abs(): AABB;
-  get_center(): Vector3;
-  get_volume(): number;
-  has_volume(): boolean;
-  has_surface(): boolean;
-  has_point(point_: Vector3): boolean;
-  is_equal_approx(aabb_: AABB): boolean;
-  is_finite(): boolean;
+  getCenter(): Vector3;
+  getVolume(): number;
+  hasVolume(): boolean;
+  hasSurface(): boolean;
+  hasPoint(point_: Vector3): boolean;
+  isEqualApprox(aabb_: AABB): boolean;
+  isFinite(): boolean;
   intersects(with_: AABB): boolean;
   encloses(with_: AABB): boolean;
-  intersects_plane(plane_: Plane): boolean;
+  intersectsPlane(plane_: Plane): boolean;
   intersection(with_: AABB): AABB;
   merge(with_: AABB): AABB;
-  expand(to_point_: Vector3): AABB;
+  expand(toPoint_: Vector3): AABB;
   grow(by_: number): AABB;
-  get_support(dir_: Vector3): Vector3;
-  get_longest_axis(): Vector3;
-  get_longest_axis_index(): number;
-  get_longest_axis_size(): number;
-  get_shortest_axis(): Vector3;
-  get_shortest_axis_index(): number;
-  get_shortest_axis_size(): number;
-  get_endpoint(idx_: number): Vector3;
-  intersects_segment(from_: Vector3, to_: Vector3): any;
-  intersects_ray(from_: Vector3, dir_: Vector3): any;
+  getSupport(dir_: Vector3): Vector3;
+  getLongestAxis(): Vector3;
+  getLongestAxisIndex(): number;
+  getLongestAxisSize(): number;
+  getShortestAxis(): Vector3;
+  getShortestAxisIndex(): number;
+  getShortestAxisSize(): number;
+  getEndpoint(idx_: number): Vector3;
+  intersectsSegment(from_: Vector3, to_: Vector3): any;
+  intersectsRay(from_: Vector3, dir_: Vector3): any;
 
 }
 

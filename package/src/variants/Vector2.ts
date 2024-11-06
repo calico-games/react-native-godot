@@ -4,9 +4,9 @@ import {Vector2i} from './Vector2i';
 
 type Vector2Constructor = {
   (): Vector2;
-  (from: Vector2): Vector2;
-  (from: Vector2i): Vector2;
-  (x: number, y: number): Vector2;
+  (from_: Vector2): Vector2;
+  (from_: Vector2i): Vector2;
+  (x_: number, y_: number): Vector2;
 
 };
 
@@ -19,30 +19,30 @@ export interface Vector2 {
   y: number;
 
   angle(): number;
-  angle_to(to_: Vector2): number;
-  angle_to_point(to_: Vector2): number;
-  direction_to(to_: Vector2): Vector2;
-  distance_to(to_: Vector2): number;
-  distance_squared_to(to_: Vector2): number;
+  angleTo(to_: Vector2): number;
+  angleToPoint(to_: Vector2): number;
+  directionTo(to_: Vector2): Vector2;
+  distanceTo(to_: Vector2): number;
+  distanceSquaredTo(to_: Vector2): number;
   length(): number;
-  length_squared(): number;
-  limit_length(length_: number): Vector2;
+  lengthSquared(): number;
+  limitLength(length_: number): Vector2;
   normalized(): Vector2;
-  is_normalized(): boolean;
-  is_equal_approx(to_: Vector2): boolean;
-  is_zero_approx(): boolean;
-  is_finite(): boolean;
+  isNormalized(): boolean;
+  isEqualApprox(to_: Vector2): boolean;
+  isZeroApprox(): boolean;
+  isFinite(): boolean;
   posmod(mod_: number): Vector2;
   posmodv(modv_: Vector2): Vector2;
   project(b_: Vector2): Vector2;
   lerp(to_: Vector2, weight_: number): Vector2;
   slerp(to_: Vector2, weight_: number): Vector2;
-  cubic_interpolate(b_: Vector2, pre_a_: Vector2, post_b_: Vector2, weight_: number): Vector2;
-  cubic_interpolate_in_time(b_: Vector2, pre_a_: Vector2, post_b_: Vector2, weight_: number, b_t_: number, pre_a_t_: number, post_b_t_: number): Vector2;
-  bezier_interpolate(control_1_: Vector2, control_2_: Vector2, end_: Vector2, t_: number): Vector2;
-  max_axis_index(): number;
-  min_axis_index(): number;
-  move_toward(to_: Vector2, delta_: number): Vector2;
+  cubicInterpolate(b_: Vector2, preA_: Vector2, postB_: Vector2, weight_: number): Vector2;
+  cubicInterpolateInTime(b_: Vector2, preA_: Vector2, postB_: Vector2, weight_: number, bT_: number, preAT_: number, postBT_: number): Vector2;
+  bezierInterpolate(control1_: Vector2, control2_: Vector2, end_: Vector2, t_: number): Vector2;
+  maxAxisIndex(): number;
+  minAxisIndex(): number;
+  moveToward(to_: Vector2, delta_: number): Vector2;
   rotated(angle_: number): Vector2;
   orthogonal(): Vector2;
   floor(): Vector2;
@@ -64,7 +64,7 @@ export interface Vector2 {
   minf(with_: number): Vector2;
   max(with_: Vector2): Vector2;
   maxf(with_: number): Vector2;
-  from_angle(angle_: number): Vector2;
+  fromAngle(angle_: number): Vector2;
 
 }
 

@@ -4,9 +4,9 @@ import {Vector3} from './Vector3';
 
 type Vector3iConstructor = {
   (): Vector3i;
-  (from: Vector3i): Vector3i;
-  (from: Vector3): Vector3i;
-  (x: number, y: number, z: number): Vector3i;
+  (from_: Vector3i): Vector3i;
+  (from_: Vector3): Vector3i;
+  (x_: number, y_: number, z_: number): Vector3i;
 
 };
 
@@ -19,12 +19,12 @@ export interface Vector3i {
   y: number;
   z: number;
 
-  min_axis_index(): number;
-  max_axis_index(): number;
-  distance_to(to_: Vector3i): number;
-  distance_squared_to(to_: Vector3i): number;
+  minAxisIndex(): number;
+  maxAxisIndex(): number;
+  distanceTo(to_: Vector3i): number;
+  distanceSquaredTo(to_: Vector3i): number;
   length(): number;
-  length_squared(): number;
+  lengthSquared(): number;
   sign(): Vector3i;
   abs(): Vector3i;
   clamp(min_: Vector3i, max_: Vector3i): Vector3i;

@@ -5,8 +5,8 @@ import type {HostComponent} from 'react-native';
 import GodotViewNativeComponent from '../specs/GodotViewNativeComponent';
 
 import {GodotViewApi} from './api';
-import type { GodotViewProps } from './types';
-import { GodotViewNativeId } from './GodotViewNativeId';
+import type {GodotViewProps} from './types';
+import {GodotViewNativeId} from './GodotViewNativeId';
 
 const NativeGodotView: HostComponent<GodotViewProps> = GodotViewNativeComponent;
 
@@ -52,7 +52,6 @@ export class GodotView extends React.Component<GodotViewProps> {
     }
 
     if (prevProps.onMessage === undefined && onMessage !== undefined) {
-      console.log('Setting onMessage');
       assertGodotViewApi();
       GodotViewApi.setJsiProperty(this._nativeID, "onMessage", onMessage);
     }
@@ -72,6 +71,14 @@ export class GodotView extends React.Component<GodotViewProps> {
   public resume() {
     assertGodotViewApi();
     GodotViewApi.resume(this._nativeID);
+  }
+
+  /**
+   * Resume the Godot view.
+   */
+  public getRoot() {
+    assertGodotViewApi();
+    return GodotViewApi.getRoot(this._nativeID);
   }
 
   /**
@@ -98,6 +105,14 @@ export class GodotView extends React.Component<GodotViewProps> {
     GodotViewApi.emitMessage(this._nativeID, message);
   }
 
+  /**
+   * Check if the Godot view is ready.
+   */
+  public get isReady(): boolean {
+    assertGodotViewApi();
+    return GodotViewApi.isReady(this._nativeID);
+  }
+
   render() {
     const {debug = false, ...viewProps} = this.props;
     return (
@@ -115,8 +130,10 @@ const assertGodotViewApi = () => {
     GodotViewApi === null ||
     GodotViewApi.setJsiProperty === null ||
     GodotViewApi.pause === null ||
-    GodotViewApi.resume === null
+    GodotViewApi.resume === null ||
+    GodotViewApi.getRoot === null ||
+    GodotViewApi.isReady === null
   ) {
-    throw Error('Godot View Api was not found.');
+    throw Error('Godot View API was not found.');
   }
 };

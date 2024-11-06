@@ -6,10 +6,10 @@ import {Vector3} from './Vector3';
 
 type Transform3DConstructor = {
   (): Transform3D;
-  (from: Transform3D): Transform3D;
-  (basis: Basis, origin: Vector3): Transform3D;
-  (x_axis: Vector3, y_axis: Vector3, z_axis: Vector3, origin: Vector3): Transform3D;
-  (from: Projection): Transform3D;
+  (from_: Transform3D): Transform3D;
+  (basis_: Basis, origin_: Vector3): Transform3D;
+  (xAxis_: Vector3, yAxis_: Vector3, zAxis_: Vector3, origin_: Vector3): Transform3D;
+  (from_: Projection): Transform3D;
 
 };
 
@@ -22,17 +22,17 @@ export interface Transform3D {
   origin: Vector3;
 
   inverse(): Transform3D;
-  affine_inverse(): Transform3D;
+  affineInverse(): Transform3D;
   orthonormalized(): Transform3D;
   rotated(axis_: Vector3, angle_: number): Transform3D;
-  rotated_local(axis_: Vector3, angle_: number): Transform3D;
+  rotatedLocal(axis_: Vector3, angle_: number): Transform3D;
   scaled(scale_: Vector3): Transform3D;
-  scaled_local(scale_: Vector3): Transform3D;
+  scaledLocal(scale_: Vector3): Transform3D;
   translated(offset_: Vector3): Transform3D;
-  translated_local(offset_: Vector3): Transform3D;
-  interpolate_with(xform_: Transform3D, weight_: number): Transform3D;
-  is_equal_approx(xform_: Transform3D): boolean;
-  is_finite(): boolean;
+  translatedLocal(offset_: Vector3): Transform3D;
+  interpolateWith(xform_: Transform3D, weight_: number): Transform3D;
+  isEqualApprox(xform_: Transform3D): boolean;
+  isFinite(): boolean;
 
 }
 

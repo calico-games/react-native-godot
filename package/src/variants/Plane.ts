@@ -4,12 +4,12 @@ import {Vector3} from './Vector3';
 
 type PlaneConstructor = {
   (): Plane;
-  (from: Plane): Plane;
-  (normal: Vector3): Plane;
-  (normal: Vector3, d: number): Plane;
-  (normal: Vector3, point: Vector3): Plane;
-  (point1: Vector3, point2: Vector3, point3: Vector3): Plane;
-  (a: number, b: number, c: number, d: number): Plane;
+  (from_: Plane): Plane;
+  (normal_: Vector3): Plane;
+  (normal_: Vector3, d_: number): Plane;
+  (normal_: Vector3, point_: Vector3): Plane;
+  (point1_: Vector3, point2_: Vector3, point3_: Vector3): Plane;
+  (a_: number, b_: number, c_: number, d_: number): Plane;
 
 };
 
@@ -22,13 +22,13 @@ export interface Plane {
   d: number;
 
   normalized(): Plane;
-  is_equal_approx(to_plane_: Plane): boolean;
-  is_finite(): boolean;
-  is_point_over(point_: Vector3): boolean;
-  distance_to(point_: Vector3): number;
-  has_point(point_: Vector3, tolerance_: number): boolean;
+  isEqualApprox(toPlane_: Plane): boolean;
+  isFinite(): boolean;
+  isPointOver(point_: Vector3): boolean;
+  distanceTo(point_: Vector3): number;
+  hasPoint(point_: Vector3, tolerance_: number): boolean;
   project(point_: Vector3): Vector3;
-  intersect_3(b_: Plane, c_: Plane): any;
+  intersect3(b_: Plane, c_: Plane): any;
 
 }
 

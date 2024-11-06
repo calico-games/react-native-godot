@@ -49,16 +49,6 @@ yarn add react-native-godot
 
 Take a look at the `example` folder for a full implem 👀.
 
-### Godot Variants
-
-Godot variants are available in React Native, here is the list:
-`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`.
-
-For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can use normal JS types and it will be automatically converted to Godot variants and vice versa.
-
-All methods and properties are available too, for instance, you can use `Vector3(1, 2, 3).length()`.
-Complete documentation is available at [https://docs.godotengine.org/en/stable/classes/index.html#variant-types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types).
-
 ### React Native <-> Godot
 
 You can send messages from React Native to Godot and receive messages from Godot in React Native.
@@ -85,7 +75,12 @@ const Example = () => {
  const godotRef = useRef<GodotView>(null);
  const {Vector3, Vector2} = useGodot(); 
 
- useEffect(() => {
+  // Call gdsript method from React Native
+  useEffect(() => {  
+    if (!godotRef.current || !godotRef.current?.isReady) {
+      return;
+    }
+
     // Emit a message to Godot from React Native
     godotRef.current?.emitMessage({
       message: 'Hello from React Native!',
@@ -96,7 +91,20 @@ const Example = () => {
     // All methods and properties are available too :)
     console.log('Vector3 y:', Vector3(1, 2, 3).y);
     console.log('Length', Vector2(3, 1).length());
-  }, []);
+  
+    // Retrieve a node from your scene
+    const node = godotRef.current?.getRoot()?.getNode('MySuperNode');
+    if (!node) {
+      return;
+    }
+
+    // Call method `hello_world` from the gdscript attached to the node in your scene
+    node.hello_world();
+
+    // You can also call your method and return a value with any supported types
+    const something = node.method_that_returns_something();
+    console.log('Something:', something);
+  }, [godotRef.current?.isReady]);
 
   return (
     <Godot
@@ -138,6 +146,12 @@ func _input(event: InputEvent) -> void:
       "pos": adjusted_position,
     })
 
+func hello_world() -> void:
+  print("Hello World!")
+
+func method_that_returns_something() -> int:
+  return 42
+
 ## This function is used to adjust the screen position for the window.
 func adjust_for_window(pos: Vector2) -> Vector2:
   var window = get_viewport().get_window()
@@ -157,9 +171,32 @@ func adjust_for_window(pos: Vector2) -> Vector2:
   )
 ```
 
-## Godot (How to)
+## Godot Variants
 
-* To import your **Godot project** into react-native, you need to **generate a pck file** that basically packs up all your game assets, scripts etc.
+Godot variants are available in React Native, here is the list:
+`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`.
+
+For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can use normal JS types and it will be automatically converted to Godot variants and vice versa.
+
+All methods and properties are available too, for instance, you can use `Vector3(1, 2, 3).length()`.
+Complete documentation is available at [https://docs.godotengine.org/en/stable/classes/index.html#variant-types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types).
+
+## Access any Godot Nodes from React Native
+
+You can retrieve a node from your scene in React Native and call methods on it.
+
+Current supported methods for a Node are:
+
+* getNode(name: string): Node | null
+* getParent(): Node | null
+* getChildren(): Node[]
+* getChildCount(): number
+
+(+ Any method you've defined in your gdscript 😌)
+
+## Import your Godot Project (How to)
+
+* To import your **Godot project** into React Native, you need to **generate a pck file** that basically packs up all your game assets, scripts etc.
 It's a convenient way to pack your game into a single file.
 
 * First, you need to add a `export_presets.cfg` in the directory of your Godot project.
@@ -203,10 +240,9 @@ server: {
 The Godot engine is quite large, so the library size is also quite large too 😅.
 
 Godot with all features enabled is around 140MB for iOS (arm64).
-`godot-cpp` bindings is around 60MB, which is used to communicate with the Godot engine from React Native.
-So for now, it's around 200MB for iOS (arm64), we might be able to reduce this size in the future.
+We might be able to reduce this size in the future.
 
-For example by disabling features that are not needed, removing `MoltenVK` for iOS in Godot 4.4 (which is around 9MB), not depending on `godot-cpp` by forking the engine completely, etc.
+For example by disabling features that are not needed, removing `MoltenVK` for iOS in Godot 4.4 (which is around 9MB), not depending on `godot-cpp` too much etc.
 Also, your pck file must be considered in the size of your app. Which can be quite large too if you have a lot of big assets like 3D models, textures, etc.
 
 ## Limitations & Known Issues
@@ -224,7 +260,7 @@ Also, your pck file must be considered in the size of your app. Which can be qui
 * [x] Improve library size
 * [x] Add support for all Godot variants
 * [ ] Investigate PCK asset swapping
-* [ ] Add support for more Godot features
+* [x] Add support for more Godot features
 
 ## Contributing
 

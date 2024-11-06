@@ -27,12 +27,33 @@ const EarthExample: React.FC = _props => {
   useEffect(() => {
     const pos = Vector3(3, 0, 0);
     console.log('Position:', pos);
-    console.log('Vector2:', Vector2(1, 1));
+    pos.y = 5;
+    console.log('New Position:', pos);
+    console.log('Vector2:', Vector2(1, 1).normalized().isNormalized());
     console.log('Length:', Vector2(3, 1).length());
     console.log('Quaternion:', Quaternion(0, 0, 0, 1));
     console.log('Transform3D origin:', Transform3D().origin);
     console.log('Vector3 y:', Vector3(1, 2, 3).y);
   }, []);
+
+  const isReady = earthRef.current?.isReady || false;
+
+  useEffect(() => {  
+    if (!earthRef.current || !isReady) {
+      return;
+    }
+
+    console.log('Earth is Ready!');
+  
+    const sun = earthRef.current?.getRoot()?.getNode('Sun');
+    if (!sun) {
+      return;
+    }
+
+    console.log('Sun node:', sun);
+    // Call get_info method from the Godot script attached to the Sun node!!!
+    console.log(sun?.get_info());
+  }, [isReady]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('transitionStart', (e: any) => {
@@ -63,7 +84,6 @@ const EarthExample: React.FC = _props => {
   }, [navigation]);
 
   const onMessage = (message: any) => {
-    console.log('Message received:', message);
     if (message.lat === undefined || message.lon === undefined) {
       return;
     }
@@ -210,9 +230,6 @@ const EarthExample: React.FC = _props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.loading} pointerEvents={'none'}>
-        <ActivityIndicator size="large" color="white" />
-      </View>
       <Godot
         ref={earthRef}
         style={styles.earth}
@@ -228,6 +245,11 @@ const EarthExample: React.FC = _props => {
           <Text style={styles.time}>🌃 {sunset && timezone ? formatTime(sunset) : '00:00'}</Text>
         </>)}
       </View>
+      {!isReady && (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      )}
     </View>
   );
 };

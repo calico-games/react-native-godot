@@ -14,6 +14,10 @@ export declare class GodotView extends React.Component<GodotViewProps> {
      */
     resume(): void;
     /**
+     * Resume the Godot view.
+     */
+    getRoot(): number;
+    /**
      * Start drawing the Godot view.
      */
     static startDrawing(): void;
@@ -25,6 +29,10 @@ export declare class GodotView extends React.Component<GodotViewProps> {
      * Emit a message to the Godot view.
      */
     emitMessage(message: any): void;
+    /**
+     * Check if the Godot view is ready.
+     */
+    get isReady(): boolean;
     render(): React.JSX.Element;
 }
 //# sourceMappingURL=GodotView.d.ts.map

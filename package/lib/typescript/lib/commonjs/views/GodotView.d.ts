@@ -23,9 +23,17 @@ export class GodotView extends GodotView_base {
      */
     resume(): void;
     /**
+     * Resume the Godot view.
+     */
+    getRoot(): number;
+    /**
      * Emit a message to the Godot view.
      */
     emitMessage(message: any): void;
+    /**
+     * Check if the Godot view is ready.
+     */
+    get isReady(): boolean;
     render(): any;
 }
 export {};

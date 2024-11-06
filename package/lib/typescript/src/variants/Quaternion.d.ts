@@ -2,11 +2,11 @@ import { Basis } from './Basis';
 import { Vector3 } from './Vector3';
 type QuaternionConstructor = {
     (): Quaternion;
-    (from: Quaternion): Quaternion;
-    (from: Basis): Quaternion;
-    (axis: Vector3, angle: number): Quaternion;
-    (arc_from: Vector3, arc_to: Vector3): Quaternion;
-    (x: number, y: number, z: number, w: number): Quaternion;
+    (from_: Quaternion): Quaternion;
+    (from_: Basis): Quaternion;
+    (axis_: Vector3, angle_: number): Quaternion;
+    (arcFrom_: Vector3, arcTo_: Vector3): Quaternion;
+    (x_: number, y_: number, z_: number, w_: number): Quaternion;
 };
 declare global {
     var Quaternion: QuaternionConstructor;
@@ -17,22 +17,22 @@ export interface Quaternion {
     z: number;
     w: number;
     length(): number;
-    length_squared(): number;
+    lengthSquared(): number;
     normalized(): Quaternion;
-    is_normalized(): boolean;
-    is_equal_approx(to_: Quaternion): boolean;
-    is_finite(): boolean;
+    isNormalized(): boolean;
+    isEqualApprox(to_: Quaternion): boolean;
+    isFinite(): boolean;
     inverse(): Quaternion;
     log(): Quaternion;
     exp(): Quaternion;
-    angle_to(to_: Quaternion): number;
+    angleTo(to_: Quaternion): number;
     dot(with_: Quaternion): number;
     slerp(to_: Quaternion, weight_: number): Quaternion;
     slerpni(to_: Quaternion, weight_: number): Quaternion;
-    spherical_cubic_interpolate(b_: Quaternion, pre_a_: Quaternion, post_b_: Quaternion, weight_: number): Quaternion;
-    spherical_cubic_interpolate_in_time(b_: Quaternion, pre_a_: Quaternion, post_b_: Quaternion, weight_: number, b_t_: number, pre_a_t_: number, post_b_t_: number): Quaternion;
-    get_axis(): Vector3;
-    get_angle(): number;
+    sphericalCubicInterpolate(b_: Quaternion, preA_: Quaternion, postB_: Quaternion, weight_: number): Quaternion;
+    sphericalCubicInterpolateInTime(b_: Quaternion, preA_: Quaternion, postB_: Quaternion, weight_: number, bT_: number, preAT_: number, postBT_: number): Quaternion;
+    getAxis(): Vector3;
+    getAngle(): number;
 }
 export {};
 //# sourceMappingURL=Quaternion.d.ts.map

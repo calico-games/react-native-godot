@@ -45,7 +45,6 @@ export class GodotView extends React.Component {
       GodotViewApi.setJsiProperty(this._nativeID, "scene", scene);
     }
     if (prevProps.onMessage === undefined && onMessage !== undefined) {
-      console.log('Setting onMessage');
       assertGodotViewApi();
       GodotViewApi.setJsiProperty(this._nativeID, "onMessage", onMessage);
     }
@@ -65,6 +64,14 @@ export class GodotView extends React.Component {
   resume() {
     assertGodotViewApi();
     GodotViewApi.resume(this._nativeID);
+  }
+
+  /**
+   * Resume the Godot view.
+   */
+  getRoot() {
+    assertGodotViewApi();
+    return GodotViewApi.getRoot(this._nativeID);
   }
 
   /**
@@ -90,6 +97,14 @@ export class GodotView extends React.Component {
     assertGodotViewApi();
     GodotViewApi.emitMessage(this._nativeID, message);
   }
+
+  /**
+   * Check if the Godot view is ready.
+   */
+  get isReady() {
+    assertGodotViewApi();
+    return GodotViewApi.isReady(this._nativeID);
+  }
   render() {
     const {
       debug = false,
@@ -102,8 +117,8 @@ export class GodotView extends React.Component {
   }
 }
 const assertGodotViewApi = () => {
-  if (GodotViewApi === null || GodotViewApi.setJsiProperty === null || GodotViewApi.pause === null || GodotViewApi.resume === null) {
-    throw Error('Godot View Api was not found.');
+  if (GodotViewApi === null || GodotViewApi.setJsiProperty === null || GodotViewApi.pause === null || GodotViewApi.resume === null || GodotViewApi.getRoot === null || GodotViewApi.isReady === null) {
+    throw Error('Godot View API was not found.');
   }
 };
 //# sourceMappingURL=GodotView.js.map

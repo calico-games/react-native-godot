@@ -1,9 +1,9 @@
 import { Vector4 } from './Vector4';
 type Vector4iConstructor = {
     (): Vector4i;
-    (from: Vector4i): Vector4i;
-    (from: Vector4): Vector4i;
-    (x: number, y: number, z: number, w: number): Vector4i;
+    (from_: Vector4i): Vector4i;
+    (from_: Vector4): Vector4i;
+    (x_: number, y_: number, z_: number, w_: number): Vector4i;
 };
 declare global {
     var Vector4i: Vector4iConstructor;
@@ -13,10 +13,10 @@ export interface Vector4i {
     y: number;
     z: number;
     w: number;
-    min_axis_index(): number;
-    max_axis_index(): number;
+    minAxisIndex(): number;
+    maxAxisIndex(): number;
     length(): number;
-    length_squared(): number;
+    lengthSquared(): number;
     sign(): Vector4i;
     abs(): Vector4i;
     clamp(min_: Vector4i, max_: Vector4i): Vector4i;
@@ -27,8 +27,8 @@ export interface Vector4i {
     mini(with_: number): Vector4i;
     max(with_: Vector4i): Vector4i;
     maxi(with_: number): Vector4i;
-    distance_to(to_: Vector4i): number;
-    distance_squared_to(to_: Vector4i): number;
+    distanceTo(to_: Vector4i): number;
+    distanceSquaredTo(to_: Vector4i): number;
 }
 export {};
 //# sourceMappingURL=Vector4i.d.ts.map

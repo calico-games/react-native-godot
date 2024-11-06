@@ -2,10 +2,10 @@ import { Quaternion } from './Quaternion';
 import { Vector3 } from './Vector3';
 type BasisConstructor = {
     (): Basis;
-    (from: Basis): Basis;
-    (from: Quaternion): Basis;
-    (axis: Vector3, angle: number): Basis;
-    (x_axis: Vector3, y_axis: Vector3, z_axis: Vector3): Basis;
+    (from_: Basis): Basis;
+    (from_: Quaternion): Basis;
+    (axis_: Vector3, angle_: number): Basis;
+    (xAxis_: Vector3, yAxis_: Vector3, zAxis_: Vector3): Basis;
 };
 declare global {
     var Basis: BasisConstructor;
@@ -20,15 +20,15 @@ export interface Basis {
     determinant(): number;
     rotated(axis_: Vector3, angle_: number): Basis;
     scaled(scale_: Vector3): Basis;
-    get_scale(): Vector3;
+    getScale(): Vector3;
     tdotx(with_: Vector3): number;
     tdoty(with_: Vector3): number;
     tdotz(with_: Vector3): number;
     slerp(to_: Basis, weight_: number): Basis;
-    is_equal_approx(b_: Basis): boolean;
-    is_finite(): boolean;
-    get_rotation_quaternion(): Quaternion;
-    from_scale(scale_: Vector3): Basis;
+    isEqualApprox(b_: Basis): boolean;
+    isFinite(): boolean;
+    getRotationQuaternion(): Quaternion;
+    fromScale(scale_: Vector3): Basis;
 }
 export {};
 //# sourceMappingURL=Basis.d.ts.map
