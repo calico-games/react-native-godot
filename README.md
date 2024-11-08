@@ -21,6 +21,7 @@ Create immersive 3D experiences or interactive games directly within React Nativ
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
 * ✅ Supports old and new arch
 * 🙂 Supports Godot Variants in React Native
+* 🧨 Call GDScript methods in React Native
 * 📦 Easy import of your Godot projects
 
 ## Device Support
