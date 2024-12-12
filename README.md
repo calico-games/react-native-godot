@@ -10,12 +10,12 @@ Create immersive 3D experiences or interactive games directly within React Nativ
 [![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
 [![godot engine](https://img.shields.io/badge/Godot-4.3-blue)](https://godotengine.org/download)
 
-## Screenshots
+## Screenshots 📸
 
 [<img src="screenshots/screenshot1.jpeg" alt="Multiple Cubes demo" align="center" width="150" hspace="2" vspace="10">](screenshots/screenshot1.jpeg)
 [<img src="screenshots/screenshot2.jpeg" alt="Earth demo" align="center" width="150" hspace="2" vspace="10">](screenshots/screenshot2.jpeg)
 
-### Features
+### Features 🚀
 
 * 🏎️ Native C++ JSI performance
 * 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
@@ -24,7 +24,7 @@ Create immersive 3D experiences or interactive games directly within React Nativ
 * 🧨 Call GDScript methods in React Native
 * 📦 Easy import of your Godot projects
 
-## Device Support
+## Device Support 📱
 
 iOS support is implemented, full support for Android is almost ready.
 We'll ship that soon 😊
@@ -36,11 +36,11 @@ We'll ship that soon 😊
 | Android Emulator | 🚧        |
 | Android Device   | 🚧        |
 
-## Requirements
+## Requirements 🥸
 
 * Godot 4.3 ([https://godotengine.org/](https://godotengine.org/))
 
-## Installation
+## Installation 🚀
 
 ```sh
 npm install react-native-godot
@@ -50,11 +50,11 @@ or
 yarn add react-native-godot
 ```
 
-## Usage
+## Usage 👇
 
 Take a look at the `example` folder for a full implem 👀.
 
-### React Native <-> Godot
+### React Native <-> Godot Communication 📡
 
 You can send messages from React Native to Godot and receive messages from Godot in React Native.
 
@@ -124,7 +124,7 @@ const Example = () => {
 };
 ```
 
-### Godot implementation
+### Godot implementation (GDScript) 🧙‍♂️
 
 ```gdscript
 # This class is a demonstration of GDScript with React Native.
@@ -176,7 +176,7 @@ func adjust_for_window(pos: Vector2) -> Vector2:
   )
 ```
 
-## Godot Variants
+## Godot Variants 🍭
 
 Godot variants are available in React Native, here is the list:
 `AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`.
@@ -186,7 +186,7 @@ For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can 
 All methods and properties are available too, for instance, you can use `Vector3(1, 2, 3).length()`.
 Complete documentation is available at [https://docs.godotengine.org/en/stable/classes/index.html#variant-types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types).
 
-## Access any Godot Nodes from React Native
+## Access any Godot Nodes from React Native 🎯
 
 You can retrieve a node from your scene in React Native and call methods on it.
 
@@ -199,7 +199,7 @@ Current supported methods for a Node are:
 
 (+ Any method you've defined in your gdscript 😌)
 
-## Import your Godot Project (How to)
+## Import your Godot Project (How to) 📥
 
 * To import your **Godot project** into React Native, you need to **generate a pck file** that basically packs up all your game assets, scripts etc.
 It's a convenient way to pack your game into a single file.
@@ -212,9 +212,9 @@ Be sure you have `/Applications/Godot.app` set on your machine, if you're using 
 
 * Then, you just need to move the pck file in your assets folder.
 
-* One last thing, add a `project.godot` in your assets with the pck, see in the example folder for more details.
+* One last important thing, don't forget to add a `project.godot` in your XCode project, see in the example folder for more details.
 
-## Metro
+## Metro Config 🚇
 
 * You need to add the following to your `metro.config.js` in order to treat `.pck` files as assets and exclude them from being treated as source files.
 
@@ -240,17 +240,16 @@ server: {
 },
 ```
 
-## Library Size
+## Library Size 📦
 
-The Godot engine is quite large, so the library size is also quite large too 😅.
+Godot takes around 35MB for iOS when embedded into the app binary for production builds (with all features!).
 
-Godot with all features enabled is around 140MB for iOS (arm64).
-We might be able to reduce this size in the future.
-
-For example by disabling features that are not needed, removing `MoltenVK` for iOS in Godot 4.4 (which is around 9MB), not depending on `godot-cpp` too much etc.
+In the future, removing `MoltenVK` for iOS in Godot 4.4, not depending on `godot-cpp`, might help us squeeze size even more.
 Also, your pck file must be considered in the size of your app. Which can be quite large too if you have a lot of big assets like 3D models, textures, etc.
 
-## Limitations & Known Issues
+For a game that is packed that takes around 50MB in Godot, the final app size will be around 90MB. Not too bad and probably slightly better than Unity 😅
+
+## Limitations & Known Issues 🚧
 
 * When importing a texture or 3D model, be sure you don't import them as `VRAM Compressed`, for some reason when exporting the pck file, it doesn't import the assets. Might be a mistake from our side.... (TBD) 😅
 
@@ -258,7 +257,7 @@ Also, your pck file must be considered in the size of your app. Which can be qui
 
 * **PCK Asset Swapping**: For now, you can't swap the pck asset at runtime properly, you need to reopen the app to load a new pck asset. It seems to be a limitation of the Godot engine itself, but we're investigating this as it would be super useful to debug on device in almost real-time.
 
-## TODO
+## TODO 📝
 
 * [x] iOS support
 * [ ] Android support
@@ -267,7 +266,7 @@ Also, your pck file must be considered in the size of your app. Which can be qui
 * [ ] Investigate PCK asset swapping
 * [x] Add support for more Godot features
 
-## Contributing
+## Contributing 🤝
 
 We're open to any contributions. Feel free to open an issue if you want to help us improve this library.
 
@@ -275,7 +274,7 @@ All the interesting stuff is located in a private repository so if you want to c
 You should have previous experiences of building the Godot Engine yourself, C++, and building blazing fast React Native libraries is a plus.
 [Bazel](https://github.com/bazelbuild/bazel) is also used internally to build the library fyk.
 
-## Copyright / License
+## Copyright / License 👨‍⚖️
 
 Copyright **Calico Games** 2024. All rights reserved.
 
@@ -289,7 +288,7 @@ PS: We are pretty flexible atm and we would like to also support the Godot Found
 
 For commercial licensing inquiries, please contact us at `team@calico.games`.
 
-## Credits
+## Credits 🙏
 
 * Special thanks to all the contributors of the [Godot Engine](https://github.com/godotengine/godot).
 * A big shoutout to [Migeran](https://github.com/migeran) that helped us a lot to build this library.
