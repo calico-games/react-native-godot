@@ -168,7 +168,7 @@ func adjust_for_window(pos: Vector2) -> Vector2:
   var window_position = Vector2()
 
   if Engine.has_singleton("ReactNative"):
-    window_position = Engine.get_singleton("GDReactNative").get_subwindow_position(window_id)
+    window_position = Engine.get_singleton("ReactNative").get_subwindow_position(window_id)
 
   return Vector2(
     pos.x + window_position.x,
