@@ -61,7 +61,7 @@ const config = {
   server: {
     enhanceMiddleware: (middleware) => {
       return (req, res, next) => {
-        if (/\.pck$/.test(req.url)) {
+        if (/\.pck/.test(req.url)) {
           res.setHeader('Content-Type', 'application/octet-stream');
         }
         return middleware(req, res, next);

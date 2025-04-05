@@ -33,7 +33,7 @@ export interface AABB {
   merge(with_: AABB): AABB;
   expand(toPoint_: Vector3): AABB;
   grow(by_: number): AABB;
-  getSupport(dir_: Vector3): Vector3;
+  getSupport(direction_: Vector3): Vector3;
   getLongestAxis(): Vector3;
   getLongestAxisIndex(): number;
   getLongestAxisSize(): number;

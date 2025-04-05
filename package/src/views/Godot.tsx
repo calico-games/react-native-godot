@@ -28,14 +28,14 @@ export const Godot = forwardRef<GodotView, GodotProps>(
 
     return (
       <GodotView
-          ref={ref}
-          style={style}
-          onLayout={_onLayout}
-          source={source}
-          scene={scene}
-          debug={debug}
-          onMessage={onMessage}
-          {...props}
+        ref={ref}
+        style={style}
+        onLayout={_onLayout}
+        source={source}
+        scene={scene}
+        debug={debug}
+        onMessage={onMessage}
+        {...props}
       />
     );
   }

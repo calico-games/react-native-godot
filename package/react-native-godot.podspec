@@ -25,14 +25,13 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
     "CLANG_CXX_LIBRARY" => "libc++",
-    'DEFINES_MODULE' => 'YES',
-    "HEADER_SEARCH_PATHS" => '"$(PODS_TARGET_SRCROOT)/cpp/"/**'
+    'DEFINES_MODULE' => 'YES'
   }
 
   s.dependency 'React-Core'
   s.dependency 'React-CoreModules'
 
-  s.frameworks = 'MetalKit'
+  s.frameworks = ['MetalKit', 'MetalFX']
 
   s.ios.vendored_frameworks = [
     'libs/ios/ReactNativeGodot.xcframework',

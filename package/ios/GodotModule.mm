@@ -12,18 +12,22 @@ using namespace facebook;
 
 @implementation GodotModule {
     GodotManager *godotManager;
-    jsi::Runtime* runtime_;
-    std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker_;
+    std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker;
 }
 
 RCT_EXPORT_MODULE()
+@synthesize bridge = _bridge;
+
+#pragma Accessors
 
 - (GodotManager *)manager {
     return godotManager;
 }
 
+#pragma Setup and invalidation
+
 + (BOOL)requiresMainQueueSetup {
-    return YES;
+    return NO;
 }
 
 - (void)invalidate {
@@ -40,16 +44,22 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
         return @true;
     }
 
-    auto _bridge = [RCTBridge currentBridge];
-    RCTCxxBridge *_cxxBridge = (RCTCxxBridge *)_bridge;
-    if (_cxxBridge == nil) return @false;
-    runtime_ = (jsi::Runtime*) _cxxBridge.runtime;
-    if (runtime_ == nil) return @false;
-    jsCallInvoker_ = _cxxBridge.jsCallInvoker;
+    RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
+    if (!jsCallInvoker) {
+        jsCallInvoker = cxxBridge.jsCallInvoker;
+    }
 
-    godotManager = [[GodotManager alloc] initWithBridge:_bridge jsInvoker:jsCallInvoker_];
+    godotManager = [[GodotManager alloc] initWithBridge:_bridge jsInvoker:jsCallInvoker];
 
     return @true;
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+(const facebook::react::ObjCTurboModule::InitParams &)params {
+    jsInvoker = params.jsInvoker;
+    return std::make_shared<facebook::react::NativeMeshGradientModuleSpecJSI>(params);
+}
+#endif
 
 @end

@@ -24,6 +24,7 @@ export interface Rect2 {
     intersection(b_: Rect2): Rect2;
     merge(b_: Rect2): Rect2;
     expand(to_: Vector2): Rect2;
+    getSupport(direction_: Vector2): Vector2;
     grow(amount_: number): Rect2;
     growIndividual(left_: number, top_: number, right_: number, bottom_: number): Rect2;
     abs(): Rect2;

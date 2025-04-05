@@ -6,6 +6,7 @@ import axios from 'axios';
 import RNReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import SolarCalculator from '@/Utils/SolarCalculator';
 import {addHours, addMinutes} from 'date-fns';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EarthExample: React.FC = _props => {
   const navigation = useNavigation<any>();
@@ -66,13 +67,22 @@ const EarthExample: React.FC = _props => {
   }, [navigation]);
 
   useEffect(() => {
+    let timeout: number | null = null;
+
     const unsubscribe = navigation.addListener('transitionEnd', (e: any) => {
       if (!e.data.closing) {
-        GodotView.startDrawing();
+        timeout = setTimeout(() => {
+          GodotView.startDrawing();
+        }, 250);
       }
     });
 
-    return unsubscribe;
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      unsubscribe();
+    }
   }, [navigation]);
 
   useEffect(() => {
@@ -237,14 +247,14 @@ const EarthExample: React.FC = _props => {
         scene='res://main.tscn'
         onMessage={onMessage}
       />
-      <View style={styles.countryInfo} pointerEvents={'none'}>
+      <SafeAreaView style={styles.countryInfo} pointerEvents={'none'}>
         <Text style={styles.countryName} numberOfLines={2} adjustsFontSizeToFit={true}>{country ? country : ''}</Text>
         {country && (<>
           <Text style={styles.time}>{currentDate ? formatTime(currentDate, true) : 'Loading...'}</Text>
           <Text style={styles.time}>🌅 {sunrise && timezone ? formatTime(sunrise) : '00:00'}</Text>
           <Text style={styles.time}>🌃 {sunset && timezone ? formatTime(sunset) : '00:00'}</Text>
         </>)}
-      </View>
+      </SafeAreaView>
       {!isReady && (
         <View style={styles.loading}>
           <ActivityIndicator size="large" color="white" />

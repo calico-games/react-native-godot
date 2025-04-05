@@ -8,7 +8,7 @@ Bring **Godot** to **React Native** 🔮.
 Create immersive 3D experiences or interactive games directly within React Native, allowing for high-performance graphics and responsive interactions.
 
 [![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
-[![godot engine](https://img.shields.io/badge/Godot-4.3-blue)](https://godotengine.org/download)
+[![godot engine](https://img.shields.io/badge/Godot-4.4.1-blue)](https://godotengine.org/download)
 
 ## Screenshots 📸
 
@@ -38,7 +38,7 @@ We'll ship that soon 😊
 
 ## Requirements 🥸
 
-* Godot 4.3 ([https://godotengine.org/](https://godotengine.org/))
+* Godot 4.4.1 ([https://godotengine.org/](https://godotengine.org/))
 
 ## Installation 🚀
 
@@ -239,15 +239,6 @@ server: {
   },
 },
 ```
-
-## Library Size 📦
-
-Godot takes around 35MB for iOS when embedded into the app binary for production builds (with all features!).
-
-In the future, removing `MoltenVK` for iOS in Godot 4.4, not depending on `godot-cpp`, might help us squeeze size even more.
-Also, your pck file must be considered in the size of your app. Which can be quite large too if you have a lot of big assets like 3D models, textures, etc.
-
-For a game that is packed that takes around 50MB in Godot, the final app size will be around 90MB. Not too bad and probably slightly better than Unity 😅
 
 ## Limitations & Known Issues 🚧
 

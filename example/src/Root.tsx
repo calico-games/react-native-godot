@@ -18,7 +18,7 @@ const RootStack = createNativeStackNavigator({
     presentation: 'card',
     headerStyle: {backgroundColor: 'transparent'},
     gestureEnabled: true,
-    headerShown: true,
+    headerShown: false,
     animationDuration: 250,
   },
   screens: {
