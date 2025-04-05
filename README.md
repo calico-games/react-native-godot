@@ -31,8 +31,8 @@ We'll ship that soon 😊
 
 | Platform         | Supported |
 | ---------------- | --------- |
-| iOS Simulator    | ✅        |
 | iOS Device       | ✅        |
+| iOS Simulator    | ❌        |
 | Android Emulator | 🚧        |
 | Android Device   | 🚧        |
 
