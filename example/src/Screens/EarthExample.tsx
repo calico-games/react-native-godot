@@ -8,12 +8,17 @@ import SolarCalculator from '@/Utils/SolarCalculator';
 import {addHours, addMinutes} from 'date-fns';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+type Coordinates = {
+  lat: number | null;
+  lon: number | null;
+};
+
 const EarthExample: React.FC = _props => {
   const navigation = useNavigation<any>();
 
   const earthRef = useRef<GodotView>(null);
 
-  const [coordinates, setCoordinates] = useState({lat: 0, lon: 0});
+  const coordinates = useRef<Coordinates>({ lat: null, lon: null });
   const [country, setCountry] = useState('');
   const [sunrise, setSunrise] = useState<Date | null>(null);
   const [sunset, setSunset] = useState<Date | null>(null);
@@ -51,9 +56,9 @@ const EarthExample: React.FC = _props => {
       return;
     }
 
-    console.log('Sun node:', sun);
+    // console.log('Sun node:', sun);
     // Call get_info method from the Godot script attached to the Sun node!!!
-    console.log(sun?.get_info());
+    // console.log(sun?.get_info());
   }, [isReady]);
 
   useEffect(() => {
@@ -93,18 +98,30 @@ const EarthExample: React.FC = _props => {
     return unsubscribe;
   }, [navigation]);
 
-  const onMessage = (message: any) => {
+  const onMessage = useCallback((message: any) => {
     if (message.lat === undefined || message.lon === undefined) {
       return;
     }
+  
+    const newLat = Math.round(message.lat * 10000) / 10000;
+    const newLon = Math.round(message.lon * 10000) / 10000;
+  
+    const oldLat = Math.round((coordinates.current.lat ?? 0) * 10000) / 10000;
+    const oldLon = Math.round((coordinates.current.lon ?? 0) * 10000) / 10000;
+  
+    if (newLat === oldLat && newLon === oldLon) {
+      return;
+    }
 
+    console.log('Message received:', message);
+  
     RNReactNativeHapticFeedback.trigger('impactHeavy');
-
-    setCoordinates({
+  
+    coordinates.current = {
       lat: message.lat,
       lon: message.lon,
-    });
-  };
+    };
+  }, []);
 
   const letterToLetterEmoji = (letter: string) => {
     return String.fromCodePoint(letter.toLowerCase().charCodeAt(0) + 127365);
@@ -142,7 +159,11 @@ const EarthExample: React.FC = _props => {
 
     setCurrentDate(convertDate(utc, tz));
 
-    const solarData = SolarCalculator(utc, coordinates.lat, coordinates.lon);
+    const coords = coordinates.current;
+    if (!coords.lat || !coords.lon) {
+      return;
+    }
+    const solarData = SolarCalculator(utc, coords.lat, coords.lon);
     setSunrise(convertDate(solarData.sunrise, tz));
     setSunset(convertDate(solarData.sunset, tz));
 
@@ -152,18 +173,19 @@ const EarthExample: React.FC = _props => {
     };
 
     earthRef.current?.emitMessage(message);
-  }, [earthRef.current, coordinates, timezone]);
+  }, [earthRef.current, timezone]);
 
   useEffect(() => {
-    if (coordinates.lat === 0 || coordinates.lon === 0) {
+    const coords = coordinates.current;
+    if (!coords.lat || !coords.lon) {
       return;
     }
 
     // Don't use this token in your app, it's for testing purposes only 😅
     const accessToken =
       'pk.eyJ1IjoibXVnZWViIiwiYSI6ImNsZndnMWptdzBncHozYnM2Zzh3OXhnaDAifQ.LXTzWjHgMWiiyYppgQSwWQ';
-    const lat = coordinates.lat.toFixed(4);
-    const lon = coordinates.lon.toFixed(4);
+    const lat = coords.lat.toFixed(4);
+    const lon = coords.lon.toFixed(4);
 
     async function getCountryInfo() {
       try {
@@ -214,7 +236,7 @@ const EarthExample: React.FC = _props => {
     setTimezone(null);
     getCountryInfo();
     getTimezone();
-  }, [coordinates]);
+  }, [coordinates.current]);
 
   useEffect(() => {
     const interval = setInterval(() => {

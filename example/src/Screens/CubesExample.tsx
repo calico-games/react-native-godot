@@ -6,9 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 const CubesExample: React.FC = _props => {
   const navigation = useNavigation<any>();
 
-  const cube1Ref = useRef<GodotView>(null);
-  const cube2Ref = useRef<GodotView>(null);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('transitionStart', (e: any) => {
       if (e.data.closing) {
@@ -49,12 +46,14 @@ const CubesExample: React.FC = _props => {
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <Godot
-        ref={cube1Ref}
         style={styles.cube}
         source={require('@/assets/cube.pck')}
       />
       <Godot
-        ref={cube2Ref}
+        style={styles.cube}
+        source={require('@/assets/cube.pck')}
+      />
+      <Godot
         style={styles.cube}
         source={require('@/assets/cube.pck')}
       />
@@ -64,7 +63,7 @@ const CubesExample: React.FC = _props => {
 
 const styles = StyleSheet.create({
   cube: {
-    flex: 2,
+    flex: 1,
   },
 });
 
