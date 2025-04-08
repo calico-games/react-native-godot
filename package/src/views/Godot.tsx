@@ -1,5 +1,5 @@
 import React, {useEffect, forwardRef, useRef} from 'react';
-import type {RefObject, MutableRefObject, ForwardedRef, FunctionComponent} from 'react';
+import type {Ref, MutableRefObject, ForwardedRef, FunctionComponent} from 'react';
 
 import {GodotView} from './GodotView';
 import type {GodotViewProps} from './types';
@@ -7,7 +7,7 @@ import type {GodotViewProps} from './types';
 export const useGodotRef = () => useRef<GodotView>(null);
 
 export interface GodotProps extends GodotViewProps {
-  ref?: RefObject<GodotView>;
+  ref?: Ref<GodotView> | undefined;
 }
 
 export const Godot = forwardRef<GodotView, GodotProps>(

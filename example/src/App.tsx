@@ -1,3 +1,4 @@
+import {JSX} from 'react';
 import {enableScreens} from 'react-native-screens';
 enableScreens(true);
 

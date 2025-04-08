@@ -47,6 +47,10 @@ export const GodotProvider: React.FC<{children: React.ReactNode}> = ({children})
 
   useEffect(() => {
     const initialize = () => {
+      if (!NativeGodotModule) {
+        console.error('[react-native-godot] NativeGodotModule is not available');
+        return;
+      }
       NativeGodotModule.install();
 
       if (typeof global.AABB === 'function') {

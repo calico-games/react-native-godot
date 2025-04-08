@@ -7,6 +7,8 @@ unless using_bundler
   exit(1)
 end
 
+ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -34,7 +36,8 @@ target 'example' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false
+      :mac_catalyst_enabled => false,
+      :ccache_enabled => true
     )
 
     # Fix issue with No template named 'unary_function' in namespace in XCode 15

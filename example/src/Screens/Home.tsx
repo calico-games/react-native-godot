@@ -5,6 +5,7 @@ import {RectButton} from 'react-native-gesture-handler';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import type {Routes} from '@/Routes';
+import { GodotView } from 'react-native-godot';
 
 export const examples = [
   {
@@ -19,6 +20,13 @@ export const examples = [
 
 const Home: React.FC = _props => {
   const {navigate} = useNavigation<NativeStackNavigationProp<Routes, 'Home'>>();
+
+  const onPress = React.useCallback((screen: any) => {
+    // Do not wait for the transition to finish to start drawing
+    GodotView.startDrawing();
+    navigate(screen);
+  }, [navigate]);
+
   return (
     <ScrollView
       style={styles.container}
@@ -27,7 +35,7 @@ const Home: React.FC = _props => {
       {examples.map(thumbnail => (
         <RectButton
           key={thumbnail.screen}
-          onPress={() => navigate(thumbnail.screen)}>
+          onPress={() => onPress(thumbnail.screen)}>
           <View style={styles.thumbnail}>
             <Text style={styles.title}>{thumbnail.title}</Text>
             <Text style={styles.arrow}>➡️</Text>

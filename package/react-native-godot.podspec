@@ -13,10 +13,7 @@ Pod::Spec.new do |s|
   s.summary      = package["description"]
   s.description  = "Bring Godot to React Native."
   s.homepage     = "https://github.com/calico-games/react-native-godot"
-  # brief license entry:
   s.license      = "Copyright © 2024 Calico Games. All rights reserved."
-  # optional - use expanded license entry instead:
-  # s.license    = { :type => "MIT", :file => "LICENSE" }
   s.authors      = { "Calico Games" => "team@calico.games" }
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = source
@@ -27,6 +24,9 @@ Pod::Spec.new do |s|
     "CLANG_CXX_LIBRARY" => "libc++",
     'DEFINES_MODULE' => 'YES'
   }
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then 
+    s.compiler_flags = "-DRCT_NEW_ARCH_ENABLED=1"
+  end
 
   s.dependency 'React-Core'
   s.dependency 'React-CoreModules'

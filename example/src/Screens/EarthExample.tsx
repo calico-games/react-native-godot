@@ -56,7 +56,7 @@ const EarthExample: React.FC = _props => {
       return;
     }
 
-    // console.log('Sun node:', sun);
+    console.log('Sun node:', sun);
     // Call get_info method from the Godot script attached to the Sun node!!!
     // console.log(sun?.get_info());
   }, [isReady]);
@@ -72,20 +72,13 @@ const EarthExample: React.FC = _props => {
   }, [navigation]);
 
   useEffect(() => {
-    let timeout: number | null = null;
-
     const unsubscribe = navigation.addListener('transitionEnd', (e: any) => {
       if (!e.data.closing) {
-        timeout = setTimeout(() => {
-          GodotView.startDrawing();
-        }, 250);
+        GodotView.startDrawing();
       }
     });
 
     return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
       unsubscribe();
     }
   }, [navigation]);
@@ -116,7 +109,10 @@ const EarthExample: React.FC = _props => {
     console.log('Message received:', message);
   
     RNReactNativeHapticFeedback.trigger('impactHeavy');
-  
+
+    setCurrentDate(null);
+    setTimezone(null);
+
     coordinates.current = {
       lat: message.lat,
       lon: message.lon,
@@ -232,8 +228,6 @@ const EarthExample: React.FC = _props => {
       }
     }
 
-    setCurrentDate(null);
-    setTimezone(null);
     getCountryInfo();
     getTimezone();
   }, [coordinates.current]);

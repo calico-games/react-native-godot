@@ -1238,7 +1238,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-godot (0.0.8):
+  - react-native-godot (0.0.9):
     - React-Core
     - React-CoreModules
   - react-native-safe-area-context (5.3.0):
@@ -2081,7 +2081,7 @@ SPEC CHECKSUMS:
   React-logger: 88de26ac2b4ae3ebf55108f4be299f967151d0ec
   React-Mapbuffer: b6619632c9800e300a9dcfb5139009416cec6392
   React-microtasksnativemodule: e99c1d7791f5e8d5be370b78e02433e64d2391d8
-  react-native-godot: a8706fca3f4deb69cf8e7339b8bcc5da7dc2be40
+  react-native-godot: 5b782b1d53a7431e888e0b52448acfe7b814ea8d
   react-native-safe-area-context: 286b3e7b5589795bb85ffc38faf4c0706c48a092
   React-NativeModulesApple: fb48894de492e6f9a73e53d8f92a6a792e40666c
   React-perflogger: e1c8cc9ba55dfabb670966d73622eabcfa0ac29e
@@ -2120,6 +2120,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: b94ff2d7559cb66837c97a3f394ddb817faad4d6
 
-PODFILE CHECKSUM: 086365511835fc8e54e464c9413f860c6febdd5a
+PODFILE CHECKSUM: 752f3025565188c1e9434ab7a6febdc9329522e0
 
 COCOAPODS: 1.15.2

@@ -1,3 +1,0 @@
-import codegenNativeComponent from "react-native/Libraries/Utilities/codegenNativeComponent";
-export default codegenNativeComponent("GodotView");
-//# sourceMappingURL=GodotViewNativeComponent.js.map

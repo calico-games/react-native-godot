@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Godot, GodotView} from 'react-native-godot';
 import {useNavigation} from '@react-navigation/native';
@@ -17,20 +17,13 @@ const CubesExample: React.FC = _props => {
   }, [navigation]);
 
   useEffect(() => {
-    let timeout: number | null = null;
-
     const unsubscribe = navigation.addListener('transitionEnd', (e: any) => {
       if (!e.data.closing) {
-        timeout = setTimeout(() => {
-          GodotView.startDrawing();
-        }, 250);
+        GodotView.startDrawing();
       }
     });
 
     return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
       unsubscribe();
     }
   }, [navigation]);

@@ -57,8 +57,8 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
 (const facebook::react::ObjCTurboModule::InitParams &)params {
-    jsInvoker = params.jsInvoker;
-    return std::make_shared<facebook::react::NativeMeshGradientModuleSpecJSI>(params);
+    jsCallInvoker = params.jsInvoker;
+    return std::make_shared<facebook::react::NativeGodotModuleSpecJSI>(params);
 }
 #endif
 

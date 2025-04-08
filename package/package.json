@@ -1,6 +1,6 @@
 {
   "name": "react-native-godot",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Bring Godot to React Native.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -79,6 +79,14 @@
     "trailingComma": "es5",
     "useTabs": false
   },
+  "codegenConfig": {
+    "name": "RNGodot",
+    "type": "all",
+    "jsSrcsDir": "src/specs",
+    "android": {
+      "javaPackageName": "games.calico.godot"
+    }
+  },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
@@ -98,5 +106,6 @@
   },
   "bugs": {
     "url": "https://github.com/calico/react-native-godot/issues"
-  }
+  },
+  "dependencies": {}
 }
