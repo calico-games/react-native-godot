@@ -26,7 +26,7 @@ function getBlacklist() {
 const defaultConfig = getDefaultConfig(__dirname);
 
 const {
-  resolver: {sourceExts, assetExts},
+  resolver: {assetExts},
 } = defaultConfig;
 
 const config = {
@@ -40,34 +40,11 @@ const config = {
     ),
     // /dist\/.*/
     blacklistRE: getBlacklist(),
-    // Treat `.pck` files as assets
+    // [ADD THIS] Treat `.pck` files as assets
     assetExts: [...assetExts, 'pck'],
-    // Exclude `.pck` from being treated as source files
-    sourceExts: sourceExts.filter(ext => ext !== 'pck'),
   },
-
-  // quick workaround for another issue with symlinks
+  // Quick workaround for another issue with symlinks
   watchFolders: [path.resolve('.'), path.resolve('../package')],
-
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: true,
-      },
-    }),
-  },
-
-  server: {
-    enhanceMiddleware: (middleware) => {
-      return (req, res, next) => {
-        if (/\.pck/.test(req.url)) {
-          res.setHeader('Content-Type', 'application/octet-stream');
-        }
-        return middleware(req, res, next);
-      };
-    },
-  },
 };
 
 module.exports = mergeConfig(defaultConfig, config);

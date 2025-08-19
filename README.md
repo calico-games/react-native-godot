@@ -33,8 +33,8 @@ We'll ship that soon 😊
 | ---------------- | --------- |
 | iOS Device       | ✅        |
 | iOS Simulator    | ❌        |
-| Android Emulator | 🚧        |
 | Android Device   | 🚧        |
+| Android Emulator | 🚧        |
 
 ## Requirements 🥸
 
@@ -74,7 +74,7 @@ You can send messages from React Native to Godot and receive messages from Godot
 // The highest level is recommended. e.g. App.tsx
 
 import React, {useRef} from 'react';
-import {Godot, GodotView, GodotProvider, useGodot} from 'react-native-godot';
+import {GodotView, GodotProvider, useGodot} from 'react-native-godot';
 
 const Example = () => {
  const godotRef = useRef<GodotView>(null);
@@ -112,7 +112,7 @@ const Example = () => {
   }, [godotRef.current?.isReady]);
 
   return (
-    <Godot
+    <GodotView
       ref={godotRef}
       style={{flex: 1}}
       source={require('./assets/game.pck')}
@@ -216,28 +216,11 @@ Be sure you have `/Applications/Godot.app` set on your machine, if you're using 
 
 ## Metro Config 🚇
 
-* You need to add the following to your `metro.config.js` in order to treat `.pck` files as assets and exclude them from being treated as source files.
+* You need to add `pck` in your `assetExts` in `metro.config.js` in order to treat `.pck` files as assets.
 
 ```js
 // Treat `.pck` files as assets
 assetExts: [...assetExts, 'pck'],
-// Exclude `.pck` from being treated as source files
-sourceExts: sourceExts.filter(ext => ext !== 'pck'),
-```
-
-And...
-
-```js
-server: {
-  enhanceMiddleware: (middleware) => {
-    return (req, res, next) => {
-      if (/\.pck$/.test(req.url)) {
-        res.setHeader('Content-Type', 'application/octet-stream');
-      }
-      return middleware(req, res, next);
-    };
-  },
-},
 ```
 
 ## Limitations & Known Issues 🚧

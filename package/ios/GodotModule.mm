@@ -27,7 +27,7 @@ RCT_EXPORT_MODULE()
 #pragma Setup and invalidation
 
 + (BOOL)requiresMainQueueSetup {
-    return NO;
+    return YES;
 }
 
 - (void)invalidate {
@@ -49,7 +49,8 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
         jsCallInvoker = cxxBridge.jsCallInvoker;
     }
 
-    godotManager = [[GodotManager alloc] initWithBridge:_bridge jsInvoker:jsCallInvoker];
+    godotManager = [[GodotManager alloc] initWithBridge:cxxBridge
+                                              jsInvoker:jsCallInvoker];
 
     return @true;
 }

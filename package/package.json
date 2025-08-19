@@ -1,6 +1,6 @@
 {
   "name": "react-native-godot",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Bring Godot to React Native.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -60,13 +60,9 @@
     "react-native-builder-bob": "^0.39.0",
     "typescript": "5.0.4"
   },
-  "resolutions": {
-    "@types/react": "^18.2.44",
-    "@react-native-community/cli": "^14.0.0-alpha.4"
-  },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": ">=19.0",
+    "react-native": ">=0.78"
   },
   "eslintIgnore": [
     "node_modules/",

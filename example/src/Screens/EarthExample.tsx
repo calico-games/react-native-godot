@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Godot, GodotView, useGodot} from 'react-native-godot';
+import {GodotView, useGodot} from 'react-native-godot';
 import axios from 'axios';
 import RNReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import SolarCalculator from '@/Utils/SolarCalculator';
@@ -256,7 +256,7 @@ const EarthExample: React.FC = _props => {
 
   return (
     <View style={styles.container}>
-      <Godot
+      <GodotView
         ref={earthRef}
         style={styles.earth}
         source={require('@/assets/earth.pck')}

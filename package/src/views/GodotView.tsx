@@ -1,24 +1,60 @@
 import React from 'react';
-import {Image} from 'react-native';
-import type {HostComponent} from 'react-native';
+import {Image, requireNativeComponent} from 'react-native';
+import type {HostComponent, ImageSourcePropType} from 'react-native';
 
-import GodotViewNativeComponent from '../specs/GodotViewNativeComponent';
-
-import {GodotViewApi} from './api';
 import type {GodotViewProps} from './types';
 import {GodotViewNativeId} from './GodotViewNativeId';
 
-const NativeGodotView: HostComponent<GodotViewProps> = GodotViewNativeComponent;
+const NativeGodotView: HostComponent<GodotViewProps> = requireNativeComponent('GodotView');
 
 export class GodotView extends React.Component<GodotViewProps> {
+  static GodotViewApi = global.GodotViewApi;
+  private _nativeID: number;
+  
   constructor(props: GodotViewProps) {
     super(props);
     this._nativeID = GodotViewNativeId.current++;
-    const {source, scene, onMessage} = props;
+  }
+
+  private resolveAssetSource(source: ImageSourcePropType | string | number | undefined): string | null {
+    if (!source) return null;
+    
+    // Handle different source types
+    if (typeof source === 'string') {
+      // Direct URI string
+      return source;
+    } else if (typeof source === 'number') {
+      // Expo/React Native require() returns a number for assets
+      try {
+        const resolvedSource = Image.resolveAssetSource(source);
+        return resolvedSource?.uri || null;
+      } catch (error) {
+        console.error('[react-native-godot] Error resolving asset source:', error);
+        return null;
+      }
+    } else if (source && typeof source === 'object' && 'uri' in source) {
+      // Asset object with uri property
+      return (source as any).uri;
+    }
+    
+    console.error('[react-native-godot] Could not resolve asset source:', source, typeof source);
+    return null;
+  }
+
+  public get nativeId() {
+    return this._nativeID;
+  }
+
+  componentDidMount() {
+    const {source, scene, onMessage} = this.props;
 
     if (source) {
       assertGodotViewApi();
-      GodotViewApi.setJsiProperty(this._nativeID, "source", Image.resolveAssetSource(source as any).uri);
+      const sourceUri = this.resolveAssetSource(source);
+      if (sourceUri) {
+        console.log('[react-native-godot] Setting source URI:', sourceUri);
+        GodotViewApi.setJsiProperty(this._nativeID, "source", sourceUri);
+      }
     }
 
     if (scene) {
@@ -32,18 +68,15 @@ export class GodotView extends React.Component<GodotViewProps> {
     }
   }
 
-  private _nativeID: number;
-
-  public get nativeId() {
-    return this._nativeID;
-  }
-
   componentDidUpdate(prevProps: GodotViewProps) {
     const {source, scene, onMessage} = this.props;
 
     if (source !== prevProps.source) {
       assertGodotViewApi();
-      GodotViewApi.setJsiProperty(this._nativeID, "source", Image.resolveAssetSource(source as any).uri);
+      const sourceUri = this.resolveAssetSource(source);
+      if (sourceUri) {
+        GodotViewApi.setJsiProperty(this._nativeID, "source", sourceUri);
+      }
     }
 
     if (scene !== prevProps.scene) {
@@ -127,12 +160,13 @@ export class GodotView extends React.Component<GodotViewProps> {
 
 const assertGodotViewApi = () => {
   if (
-    GodotViewApi === null ||
-    GodotViewApi.setJsiProperty === null ||
-    GodotViewApi.pause === null ||
-    GodotViewApi.resume === null ||
-    GodotViewApi.getRoot === null ||
-    GodotViewApi.isReady === null
+    global.GodotViewApi === undefined ||
+    global.GodotViewApi === null ||
+    global.GodotViewApi.setJsiProperty === null ||
+    global.GodotViewApi.pause === null ||
+    global.GodotViewApi.resume === null ||
+    global.GodotViewApi.getRoot === null ||
+    global.GodotViewApi.isReady === null
   ) {
     throw Error('Godot View API was not found.');
   }

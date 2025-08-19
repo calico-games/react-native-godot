@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Godot, GodotView} from 'react-native-godot';
+import {GodotView} from 'react-native-godot';
 import {useNavigation} from '@react-navigation/native';
 
 const CubesExample: React.FC = _props => {
@@ -38,15 +38,15 @@ const CubesExample: React.FC = _props => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
-      <Godot
+      <GodotView
         style={styles.cube}
         source={require('@/assets/cube.pck')}
       />
-      <Godot
+      <GodotView
         style={styles.cube}
         source={require('@/assets/cube.pck')}
       />
-      <Godot
+      <GodotView
         style={styles.cube}
         source={require('@/assets/cube.pck')}
       />

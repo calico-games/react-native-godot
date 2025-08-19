@@ -1,3 +1,3 @@
-export * from './Godot';
 export * from './GodotView';
 export * from './types';
+export * from './api';

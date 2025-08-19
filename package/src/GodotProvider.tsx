@@ -51,61 +51,66 @@ export const GodotProvider: React.FC<{children: React.ReactNode}> = ({children})
         console.error('[react-native-godot] NativeGodotModule is not available');
         return;
       }
+
+      // Install the native module
       NativeGodotModule.install();
 
-      if (typeof global.AABB === 'function') {
-        setAABB(() => global.AABB);
-      }
-      if (typeof global.Basis === 'function') {
-        setBasis(() => global.Basis);
-      }
-      if (typeof global.Color === 'function') {
-        setColor(() => global.Color);
-      }
-      if (typeof global.Plane === 'function') {
-        setPlane(() => global.Plane);
-      }
-      if (typeof global.Projection === 'function') {
-        setProjection(() => global.Projection);
-      }
-      if (typeof global.Quaternion === 'function') {
-        setQuaternion(() => global.Quaternion);
-      }
-      if (typeof global.Rect2 === 'function') {
-        setRect2(() => global.Rect2);
-      }
-      if (typeof global.Rect2i === 'function') {
-        setRect2i(() => global.Rect2i);
-      }
-      if (typeof global.Transform2D === 'function') {
-        setTransform2D(() => global.Transform2D);
-      }
-      if (typeof global.Transform3D === 'function') {
-        setTransform3D(() => global.Transform3D);
-      }
-      if (typeof global.Vector2 === 'function') {
-        setVector2(() => global.Vector2);
-      }
-      if (typeof global.Vector2i === 'function') {
-        setVector2i(() => global.Vector2i);
-      }
-      if (typeof global.Vector3 === 'function') {
-        setVector3(() => global.Vector3);
-      }
-      if (typeof global.Vector3i === 'function') {
-        setVector3i(() => global.Vector3i);
-      }
-      if (typeof global.Vector4 === 'function') {
-        setVector4(() => global.Vector4);
-      }
-      if (typeof global.Vector4i === 'function') {
-        setVector4i(() => global.Vector4i);
+      // Wait for all global objects to be available (including GodotViewApi)
+      const checkInitialization = () => {
+        const hasGodotViewApi = 'GodotViewApi' in global && global.GodotViewApi !== null;
+        const hasAllTypes = typeof global.AABB === 'function' && typeof global.Basis === 'function' && typeof global.Color === 'function' && typeof global.Plane === 'function' && typeof global.Projection === 'function' && typeof global.Quaternion === 'function' && typeof global.Rect2 === 'function' && typeof global.Rect2i === 'function' && typeof global.Transform2D === 'function' && typeof global.Transform3D === 'function' && typeof global.Vector2 === 'function' && typeof global.Vector2i === 'function' && typeof global.Vector3 === 'function' && typeof global.Vector3i === 'function' && typeof global.Vector4 === 'function' && typeof global.Vector4i === 'function';
+
+        if (hasGodotViewApi && hasAllTypes) {
+          // Set all the state variables
+          setAABB(() => global.AABB);
+          setBasis(() => global.Basis);
+          setColor(() => global.Color);
+          setPlane(() => global.Plane);
+          setProjection(() => global.Projection);
+          setQuaternion(() => global.Quaternion);
+          setRect2(() => global.Rect2);
+          setRect2i(() => global.Rect2i);
+          setTransform2D(() => global.Transform2D);
+          setTransform3D(() => global.Transform3D);
+          setVector2(() => global.Vector2);
+          setVector2i(() => global.Vector2i);
+          setVector3(() => global.Vector3);
+          setVector3i(() => global.Vector3i);
+          setVector4(() => global.Vector4);
+          setVector4i(() => global.Vector4i);
+
+          console.info('[react-native-godot] Godot initialized with GodotViewApi');
+          setIsInitialized(true);
+
+          return true;
+        }
+
+        return false;
+      };
+
+      // Check immediately
+      if (checkInitialization()) {
+        return;
       }
 
-      if (typeof global.AABB === 'function' && typeof global.Basis === 'function' && typeof global.Color === 'function' && typeof global.Plane === 'function' && typeof global.Projection === 'function' && typeof global.Quaternion === 'function' && typeof global.Rect2 === 'function' && typeof global.Rect2i === 'function' && typeof global.Transform2D === 'function' && typeof global.Transform3D === 'function' && typeof global.Vector2 === 'function' && typeof global.Vector2i === 'function' && typeof global.Vector3 === 'function' && typeof global.Vector3i === 'function' && typeof global.Vector4 === 'function' && typeof global.Vector4i === 'function') {
-        console.info('[react-native-godot] Godot initialized');
-        setIsInitialized(true);
-      }
+      // If not ready, poll until it is (with timeout)
+      let attempts = 0;
+      const maxAttempts = 50; // 5 seconds
+
+      const pollForInitialization = () => {
+        if (checkInitialization()) {
+          return;
+        }
+
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(pollForInitialization, 100);
+        } else {
+          console.error('[react-native-godot] Initialization timeout - GodotViewApi may not be available');
+        }
+      };
+
+      setTimeout(pollForInitialization, 100);
     };
 
     initialize();
@@ -113,7 +118,7 @@ export const GodotProvider: React.FC<{children: React.ReactNode}> = ({children})
 
   return (
     <GodotContext.Provider value={ { AABB, Basis, Color, Plane, Projection, Quaternion, Rect2, Rect2i, Transform2D, Transform3D, Vector2, Vector2i, Vector3, Vector3i, Vector4, Vector4i,  isInitialized } }>
-      {children}
+      {isInitialized ? children : null}
     </GodotContext.Provider>
   );
 };

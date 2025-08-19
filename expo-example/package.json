@@ -1,0 +1,33 @@
+{
+  "name": "expo-example",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "prebuild": "expo prebuild",
+    "prebuild:clean": "expo prebuild --clean",
+    "prebuild:ios": "npx expo prebuild --platform ios --clean"
+  },
+  "dependencies": {
+    "expo": "~53.0.0",
+    "expo-status-bar": "~2.2.3",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-godot": "file:../package"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~19.0.10",
+    "expo-build-properties": "~0.14.8",
+    "glob-to-regexp": "^0.4.1",
+    "typescript": "~5.8.3"
+  },
+  "resolutions": {
+    "react": "19.0.0",
+    "react-native": "0.79.5"
+  },
+  "private": true
+}

@@ -1,7 +1,11 @@
 module.exports = {
   project: {
-    ios: {},
-    android: {},
+    ios: {
+      automaticPodsInstallation: false,
+    },
+    android: {
+      packageName: 'com.example',
+    },
   },
   assets: ['./src/assets'],
 };

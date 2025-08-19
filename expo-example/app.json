@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "React Native Godot Expo Example",
+    "slug": "expo-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.calico.reactnativegodotexpoexample",
+      "deploymentTarget": "16.0"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.calico.reactnativegodotexpoexample"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "flipper": true,
+            "deploymentTarget": "15.1"
+          }
+        }
+      ],
+      [
+        "./xcode-bundle-resources-plugin",
+        [
+          "project.godot"
+        ]
+      ]
+    ],
+    "newArchEnabled": true
+  }
+}
