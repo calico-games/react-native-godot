@@ -20,6 +20,7 @@ Bring **Godot** to **React Native** 🔮. Create immersive 3D experiences or int
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [API Reference](#api-reference)
+  - [GodotView Component](#godot-view)
   - [Godot Variants](#godot-variants)
   - [Runtime GDScript & Node Creation](#runtime-gdscript-node-creation)
   - [Scene Node Access](#scene-node-access)
@@ -105,6 +106,16 @@ const MyGameScreen = () => {
   const [isGodotReady, setIsGodotReady] = useState(false);
 
   useEffect(() => {
+    // Start Godot rendering (call once in your app)
+    GodotView.startDrawing();
+
+    return () => {
+      // Stop Godot rendering when component unmounts
+      GodotView.stopDrawing();
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isGodotReady || !godotRef.current?.isReady) {
       return;
     }
@@ -144,6 +155,135 @@ export default MyGameScreen;
 ```
 
 ## <a id="api-reference"></a>API Reference
+
+### <a id="godot-view"></a>GodotView Component
+
+The main component for embedding Godot scenes in React Native. You can use multiple `GodotView` components on the same screen - each will render a different scene but they all share the same Godot engine instance.
+
+#### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `source` | `string \| ImageSourcePropType` | Path to your .pck file |
+| `scene` | `string` | Scene path (e.g., "res://main.tscn") |
+| `style` | `StyleProp<ViewStyle>` | React Native style object |
+| `onReady` | `(instance: GodotViewRef) => void` | Called when Godot is ready |
+| `onMessage` | `(instance: GodotViewRef, message: any) => void` | Called when receiving messages from Godot |
+
+#### Instance Methods (via ref)
+
+| Method | Description |
+|--------|-------------|
+| `getRoot(): Node` | Get the root node of the loaded scene |
+| `emitMessage(message: any): void` | Send a message to Godot scripts |
+| `pause(): void` | Pause the Godot instance |
+| `resume(): void` | Resume the Godot instance |
+| `isReady: boolean` | Check if Godot is ready (getter) |
+
+#### Static Methods
+
+| Method | Description |
+|--------|-------------|
+| `GodotView.startDrawing(): void` | Start Godot rendering engine (call once per app) |
+| `GodotView.stopDrawing(): void` | Stop Godot rendering engine |
+
+**Single GodotView Example:**
+```tsx
+const MyGame = () => {
+  const godotRef = useGodotRef();
+
+  useEffect(() => {
+    // Start rendering when app launches
+    GodotView.startDrawing();
+    return () => GodotView.stopDrawing();
+  }, []);
+
+  return (
+    <GodotView
+      ref={godotRef}
+      source={require('./game.pck')}
+      scene="res://main.tscn"
+      onReady={(instance) => {
+        console.log('Godot ready!');
+        instance.emitMessage({ type: 'game_start' });
+      }}
+      onMessage={(instance, message) => {
+        console.log('From Godot:', message);
+      }}
+    />
+  );
+};
+```
+
+**Multiple GodotView Example:**
+```tsx
+const MultiSceneApp = () => {
+  const gameRef = useGodotRef();
+  const uiRef = useGodotRef();
+  const minimapRef = useGodotRef();
+
+  useEffect(() => {
+    // Start rendering once for all GodotView instances
+    GodotView.startDrawing();
+    return () => GodotView.stopDrawing();
+  }, []);
+
+  return (
+    <View style={{ flex: 1 }}>
+      {/* Main game view */}
+      <GodotView
+        ref={gameRef}
+        source={require('./game.pck')}
+        scene="res://game_world.tscn"
+        style={{ flex: 1 }}
+      />
+      
+      {/* UI overlay */}
+      <GodotView
+        ref={uiRef}
+        source={require('./ui.pck')}
+        scene="res://hud.tscn"
+        style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 100 
+        }}
+      />
+      
+      {/* Minimap */}
+      <GodotView
+        ref={minimapRef}
+        source={require('./game.pck')}
+        scene="res://minimap.tscn"
+        style={{ 
+          position: 'absolute',
+          top: 20,
+          right: 20,
+          width: 150,
+          height: 150 
+        }}
+      />
+    </View>
+  );
+};
+```
+
+**💡 Note:** All `GodotView` instances share the same Godot engine, so you only need to call `GodotView.startDrawing()` once per app, regardless of how many views you have. Use `pause()` and `resume()` on individual view instances to control which scenes are actively rendering.
+
+**Example: Controlling individual scenes:**
+```tsx
+// Pause the minimap when not needed
+minimapRef.current?.pause();
+
+// Resume it later
+minimapRef.current?.resume();
+
+// Pause game but keep UI active
+gameRef.current?.pause();
+// UI continues running for menus, etc.
+```
 
 ### <a id="godot-variants"></a>Godot Variants 🍭
 
