@@ -4,7 +4,7 @@
     "slug": "expo-example",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./images/icon.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"
@@ -16,7 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.calico.reactnativegodotexpoexample"
@@ -32,9 +32,11 @@
         }
       ],
       [
-        "./xcode-bundle-resources-plugin",
+        "./plugins/with-assets",
         [
-          "project.godot"
+          "./godot/project.godot",
+          "./godot/cube.pck",
+          "./godot/earth.pck"
         ]
       ]
     ],

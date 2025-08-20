@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import {View, NativeModules, Platform, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {GodotView, GodotViewRef, useGodot, useGodotRef} from 'react-native-godot';
+import {useAsset} from './useAsset';
 
 const gdscriptCode = `extends Node
 
@@ -21,30 +22,11 @@ func test2(value):
 `;
 
 const Root = () => {
-  const random  = Math.random().toString(36).substring(2, 15);
   const godotView = useGodotRef();
   const {Script, Node} = useGodot();
-
-  // Get Metro bundler URL dynamically
-  let metroHost = 'localhost:8081';
   
-  if (__DEV__) {
-    const scriptURL = NativeModules.SourceCode?.getConstants().scriptURL || '';
-    
-    if (scriptURL) {
-      // Extract host and port from scriptURL
-      // Example: "http://192.168.1.24:8081/index.bundle?platform=ios&dev=true"
-      const match = scriptURL.match(/http:\/\/([\d.\w]+:\d+)\//);
-      if (match) {
-        metroHost = match[1];
-      }
-    } else if (Platform.OS === 'android') {
-      // Android emulator uses 10.0.2.2 to access host machine
-      metroHost = '10.0.2.2:8081';
-    }
-  } else {
-    // TODO
-  }
+  // Use the clean hook to load the .pck asset
+  const assetUri = useAsset('./godot/earth.pck');
 
   useEffect(() => {
     if (!GodotView) {
@@ -63,7 +45,7 @@ const Root = () => {
   const node = Node();
 
   useEffect(() => {
-    if (!isGodotReady || !godotView.current || !godotView.current.isReady) {
+    if (!isGodotReady || !godotView.current) {
       return;
     }
 
@@ -85,6 +67,10 @@ const Root = () => {
     }
   }, [isGodotReady, gdscriptCode]);
 
+  if (!assetUri) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <GodotView
@@ -96,8 +82,13 @@ const Root = () => {
           console.log("📩 Message from Godot:", message);
         }}
         style={{flex: 1}}
-        source={`http://${metroHost}/assets/?unstable_path=./assets/cube.pck&hash=${random}`}
+        source={assetUri}
       />
+      {!isGodotReady && (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      )}
     </View>
   );
 };
@@ -106,6 +97,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black'
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgb(20, 20, 20)',
   },
 });
 

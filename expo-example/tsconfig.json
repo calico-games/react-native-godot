@@ -9,5 +9,6 @@
       "react": ["node_modules/@types/react"],
       "react-native": ["node_modules/@types/react-native"]
     }
-  }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
 } 

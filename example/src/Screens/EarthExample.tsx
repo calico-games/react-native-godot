@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {GodotView, useGodot, useGodotRef} from 'react-native-godot';
+import {GodotView, GodotViewRef, useGodot, useGodotRef} from 'react-native-godot';
 import axios from 'axios';
 import RNReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import SolarCalculator from '@/Utils/SolarCalculator';
@@ -42,10 +42,10 @@ const EarthExample: React.FC = _props => {
     console.log('Vector3 y:', Vector3(1, 2, 3).y);
   }, []);
 
-  const isReady = earthRef.current?.isReady || false;
+  const [isGodotReady, setIsGodotReady] = React.useState(false);
 
-  useEffect(() => {  
-    if (!earthRef.current || !isReady) {
+  useEffect(() => {
+    if (!isGodotReady || !earthRef.current) {
       return;
     }
 
@@ -59,7 +59,7 @@ const EarthExample: React.FC = _props => {
     console.log('Sun node:', sun);
     // Call get_info method from the Godot script attached to the Sun node!!!
     // console.log(sun?.get_info());
-  }, [isReady]);
+  }, [isGodotReady]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('transitionStart', (e: any) => {
@@ -91,7 +91,8 @@ const EarthExample: React.FC = _props => {
     return unsubscribe;
   }, [navigation]);
 
-  const onMessage = useCallback((message: any) => {
+  const onMessage = (_instance: GodotViewRef, message: any) => {
+    console.log("Message received from Godot:", message);
     if (message.lat === undefined || message.lon === undefined) {
       return;
     }
@@ -117,7 +118,7 @@ const EarthExample: React.FC = _props => {
       lat: message.lat,
       lon: message.lon,
     };
-  }, []);
+  };
 
   const letterToLetterEmoji = (letter: string) => {
     return String.fromCodePoint(letter.toLowerCase().charCodeAt(0) + 127365);
@@ -147,29 +148,6 @@ const EarthExample: React.FC = _props => {
     return addHours(timezoneDate, date.getTimezoneOffset() / 60);
   };
 
-  const computeSolarData = useCallback((tz: string) => {
-    let utc = new Date();
-    utc.setMilliseconds(0);
-    utc = addMinutes(utc, offset.current);
-    offset.current += 0;
-
-    setCurrentDate(convertDate(utc, tz));
-
-    const coords = coordinates.current;
-    if (!coords.lat || !coords.lon) {
-      return;
-    }
-    const solarData = SolarCalculator(utc, coords.lat, coords.lon);
-    setSunrise(convertDate(solarData.sunrise, tz));
-    setSunset(convertDate(solarData.sunset, tz));
-
-    const message = {
-      latitude: solarData.subsolarLatitude + 1,
-      longitude: solarData.subsolarLongitude - 15, // Why -15?
-    };
-
-    earthRef.current?.emitMessage(message);
-  }, [earthRef.current, timezone]);
 
   useEffect(() => {
     const coords = coordinates.current;
@@ -222,7 +200,6 @@ const EarthExample: React.FC = _props => {
         }
 
         setTimezone(timezone);
-        computeSolarData(timezone);
       } catch (error) {
         console.error('Error getting timezone:', error);
       }
@@ -233,14 +210,34 @@ const EarthExample: React.FC = _props => {
   }, [coordinates.current]);
 
   useEffect(() => {
+    if (!timezone) return;
+    
     const interval = setInterval(() => {
-      if (timezone) {
-        computeSolarData(timezone);
+      let utc = new Date();
+      utc.setMilliseconds(0);
+      utc = addMinutes(utc, offset.current);
+      offset.current += 0;
+
+      setCurrentDate(convertDate(utc, timezone));
+
+      const coords = coordinates.current;
+      if (!coords.lat || !coords.lon) {
+        return;
       }
+      const solarData = SolarCalculator(utc, coords.lat, coords.lon);
+      setSunrise(convertDate(solarData.sunrise, timezone));
+      setSunset(convertDate(solarData.sunset, timezone));
+
+      const message = {
+        latitude: solarData.subsolarLatitude + 1,
+        longitude: solarData.subsolarLongitude - 15,
+      };
+
+      earthRef.current?.emitMessage(message);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timezone, computeSolarData]);
+  }, [timezone]);
 
   const formatTime = (date: Date, displaySeconds: boolean = false) => {
     if (displaySeconds) {
@@ -254,6 +251,8 @@ const EarthExample: React.FC = _props => {
       .toLowerCase();
   }
 
+  console.log("Godot is ready", earthRef.current?.isReady());
+
   return (
     <View style={styles.container}>
       <GodotView
@@ -261,6 +260,7 @@ const EarthExample: React.FC = _props => {
         style={styles.earth}
         source={require('@/assets/earth.pck')}
         scene='res://main.tscn'
+        onReady={() => setIsGodotReady(true)}
         onMessage={onMessage}
       />
       <SafeAreaView style={styles.countryInfo} pointerEvents={'none'}>
@@ -271,7 +271,7 @@ const EarthExample: React.FC = _props => {
           <Text style={styles.time}>🌃 {sunset && timezone ? formatTime(sunset) : '00:00'}</Text>
         </>)}
       </SafeAreaView>
-      {!isReady && (
+      {!isGodotReady && (
         <View style={styles.loading}>
           <ActivityIndicator size="large" color="white" />
         </View>

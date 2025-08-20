@@ -1394,7 +1394,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-godot (0.0.11):
+  - react-native-godot (0.0.12):
     - React-Core
     - React-CoreModules
   - React-NativeModulesApple (0.79.5):
@@ -2013,7 +2013,7 @@ SPEC CHECKSUMS:
   React-logger: 85fa3509931497c72ccd2547fcc91e7299d8591e
   React-Mapbuffer: 96a2f2a176268581733be182fa6eebab1c0193be
   React-microtasksnativemodule: bda561d2648e1e52bd9e5a87f8889836bdbde2e2
-  react-native-godot: d6316c309ee23a2e02e80ab7ae0e7f2111760b50
+  react-native-godot: 84393ad9c15a1527c63f3458db907781229aea89
   React-NativeModulesApple: 1ecb83880dd11baf2228f8dd89d8419c387e03ad
   React-oscompat: 0592889a9fcf0eacb205532028e4a364e22907dd
   React-perflogger: c584fa50e422a46f37404d083fad12eb289d5de4

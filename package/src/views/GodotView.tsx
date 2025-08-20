@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useEffect} from 'react';
+import React, {useMemo, useRef, useEffect, useImperativeHandle} from 'react';
 import {Image, requireNativeComponent} from 'react-native';
 import type {HostComponent, ImageSourcePropType} from 'react-native';
 
@@ -12,7 +12,7 @@ export interface GodotViewRef {
   pause(): void;
   resume(): void;
   getRoot(): Node;
-  isReady: boolean;
+  isReady(): boolean;
   emitMessage(message: any): void;
 }
 
@@ -28,44 +28,37 @@ const GodotViewComponent = React.forwardRef<GodotViewRef, GodotViewProps>(
       return GodotViewNativeId.current++;
     }, []);
     
-    // Create the API object that will be exposed through the ref
-    const apiObject = {
-      pause: () => {
-        assertGodotViewApi();
-        GodotViewApi.pause(nativeId);
-      },
-      resume: () => {
-        assertGodotViewApi();
-        GodotViewApi.resume(nativeId);
-      },
-      getRoot: (): Node => {
-        assertGodotViewApi();
-        const root = GodotViewApi.getRoot(nativeId);
-        if (!root) {
-          throw new Error("Root node is not available");
-        }
-        return root;
-      },
-      get isReady(): boolean {
-        assertGodotViewApi();
-        return GodotViewApi.isReady(nativeId);
-      },
-      emitMessage: (message: any) => {
-        assertGodotViewApi();
-        GodotViewApi.emitMessage(nativeId, message);
-      },
-    };
-
-    // Set the ref immediately
-    useEffect(() => {
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(apiObject);
-        } else {
-          ref.current = apiObject;
-        }
-      }
-    }, [ref]);
+    // Component methods using useImperativeHandle
+    useImperativeHandle(
+      ref,
+      () => ({
+        pause: () => {
+          assertGodotViewApi();
+          GodotViewApi.pause(nativeId);
+        },
+        resume: () => {
+          assertGodotViewApi();
+          GodotViewApi.resume(nativeId);
+        },
+        getRoot: (): Node => {
+          assertGodotViewApi();
+          const root = GodotViewApi.getRoot(nativeId);
+          if (!root) {
+            throw new Error("Root node is not available");
+          }
+          return root;
+        },
+        isReady: (): boolean => {
+          assertGodotViewApi();
+          return GodotViewApi.isReady(nativeId);
+        },
+        emitMessage: (message: any) => {
+          assertGodotViewApi();
+          GodotViewApi.emitMessage(nativeId, message);
+        },
+      } as GodotViewRef),
+      [nativeId]
+    );
 
     const resolveAssetSource = (source: ImageSourcePropType | string | number | undefined): string | null => {
       if (!source) return null;
@@ -92,12 +85,23 @@ const GodotViewComponent = React.forwardRef<GodotViewRef, GodotViewProps>(
       return null;
     };
 
-    // Handle initialization after mount
+    // Store latest callback refs
+    const onMessageRef = useRef(props.onMessage);
+    const onReadyRef = useRef(props.onReady);
+    
+    // Update refs when callbacks change
     useEffect(() => {
-      const {source, scene, onMessage, onReady} = props;
+      onMessageRef.current = props.onMessage;
+      onReadyRef.current = props.onReady;
+    });
+
+    // Handle initialization after mount - only run once
+    useEffect(() => {
+      const {source, scene} = props;
+      
+      assertGodotViewApi();
 
       if (source) {
-        assertGodotViewApi();
         const sourceUri = resolveAssetSource(source);
         if (sourceUri) {
           GodotViewApi.setJsiProperty(nativeId, "source", sourceUri);
@@ -105,42 +109,26 @@ const GodotViewComponent = React.forwardRef<GodotViewRef, GodotViewProps>(
       }
 
       if (scene) {
-        assertGodotViewApi();
         GodotViewApi.setJsiProperty(nativeId, "scene", scene);
       }
+      
+      // Set up callbacks once - they use refs so they always call the latest version
+      GodotViewApi.setJsiProperty(nativeId, "onMessage", (message: any) => {
+        if (onMessageRef.current) {
+          // Get the current ref object from useImperativeHandle
+          const currentRef = ref && typeof ref !== 'function' ? ref.current : null;
+          onMessageRef.current(currentRef, message);
+        }
+      });
 
-      if (onMessage) {
-        assertGodotViewApi();
-        // Wrap onMessage to pass instance as first parameter
-        const wrappedOnMessage = (message: any) => {
-          onMessage(apiObject, message);
-        };
-        GodotViewApi.setJsiProperty(nativeId, "onMessage", wrappedOnMessage);
-      }
-
-      // Check if Godot is actually ready before calling onReady
-      if (onReady) {
-        const checkReady = () => {
-          if (GodotViewApi.isReady(nativeId)) {
-            // Double-check by also ensuring getRoot works
-            try {
-              const root = GodotViewApi.getRoot(nativeId);
-              if (root) {
-                // Use the same apiObject that's set on the ref
-                onReady(apiObject);
-                return;
-              }
-            } catch (e) {
-              // getRoot failed, not ready yet
-            }
-          }
-          // Poll until ready
-          requestAnimationFrame(checkReady);
-        };
-        checkReady();
-      }
-    }, [nativeId, props]);
-
+      GodotViewApi.setJsiProperty(nativeId, "onReady", () => {
+        if (onReadyRef.current) {
+          // Get the current ref object from useImperativeHandle
+          const currentRef = ref && typeof ref !== 'function' ? ref.current : null;
+          onReadyRef.current(currentRef);
+        }
+      });
+    }, [nativeId]); // Only run once on mount
 
     return (
       <NativeGodotView
