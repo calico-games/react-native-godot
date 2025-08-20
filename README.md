@@ -116,7 +116,7 @@ const MyGameScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (!isGodotReady || !godotRef.current?.isReady) {
+    if (!isGodotReady || !godotRef.current) {
       return;
     }
 
@@ -178,7 +178,7 @@ The main component for embedding Godot scenes in React Native. You can use multi
 | `emitMessage(message: any): void` | Send a message to Godot scripts |
 | `pause(): void` | Pause the Godot instance |
 | `resume(): void` | Resume the Godot instance |
-| `isReady: boolean` | Check if Godot is ready (getter) |
+| `isReady(): boolean` | Check if Godot is ready |
 
 #### Static Methods
 
@@ -383,7 +383,7 @@ Access and interact with nodes from your loaded Godot scenes:
 
 ```tsx
 useEffect(() => {
-  if (!godotRef.current?.isReady) return;
+  if (!isGodotReady || !godotRef.current) return;
 
   // Get the root node
   const root = godotRef.current.getRoot();
@@ -405,7 +405,7 @@ useEffect(() => {
   (player as any)?.jump(15);
   (ui as any)?.show_damage_effect();
   
-}, [godotRef.current?.isReady]);
+}, [isGodotReady]);
 ```
 
 ### <a id="react-native-godot-communication"></a>React Native ↔ Godot Communication 📡
