@@ -10,10 +10,6 @@ type Vector4iConstructor = {
 
 };
 
-declare global {
-  var Vector4i: Vector4iConstructor;
-}
-
 export interface Vector4i {
   x: number;
   y: number;
@@ -37,6 +33,12 @@ export interface Vector4i {
   distanceTo(to_: Vector4i): number;
   distanceSquaredTo(to_: Vector4i): number;
 
+}
+
+declare global {
+  namespace Godot {
+    var Vector4i: Vector4iConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

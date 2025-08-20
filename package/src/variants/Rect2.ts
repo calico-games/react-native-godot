@@ -12,10 +12,6 @@ type Rect2Constructor = {
 
 };
 
-declare global {
-  var Rect2: Rect2Constructor;
-}
-
 export interface Rect2 {
   position: Vector2;
   size: Vector2;
@@ -36,6 +32,12 @@ export interface Rect2 {
   growIndividual(left_: number, top_: number, right_: number, bottom_: number): Rect2;
   abs(): Rect2;
 
+}
+
+declare global {
+  namespace Godot {
+    var Rect2: Rect2Constructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

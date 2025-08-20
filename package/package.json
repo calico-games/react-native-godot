@@ -1,6 +1,6 @@
 {
   "name": "react-native-godot",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Bring Godot to React Native.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {GodotView, useGodot} from 'react-native-godot';
+import {GodotView, useGodot, useGodotRef} from 'react-native-godot';
 import axios from 'axios';
 import RNReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import SolarCalculator from '@/Utils/SolarCalculator';
 import {addHours, addMinutes} from 'date-fns';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type Coordinates = {
   lat: number | null;
@@ -16,7 +16,7 @@ type Coordinates = {
 const EarthExample: React.FC = _props => {
   const navigation = useNavigation<any>();
 
-  const earthRef = useRef<GodotView>(null);
+  const earthRef = useGodotRef();
 
   const coordinates = useRef<Coordinates>({ lat: null, lon: null });
   const [country, setCountry] = useState('');

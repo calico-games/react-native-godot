@@ -12,10 +12,6 @@ type Vector3Constructor = {
 
 };
 
-declare global {
-  var Vector3: Vector3Constructor;
-}
-
 export interface Vector3 {
   x: number;
   y: number;
@@ -69,6 +65,12 @@ export interface Vector3 {
   maxf(with_: number): Vector3;
   octahedronDecode(uv_: Vector2): Vector3;
 
+}
+
+declare global {
+  namespace Godot {
+    var Vector3: Vector3Constructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

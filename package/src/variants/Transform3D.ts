@@ -13,10 +13,6 @@ type Transform3DConstructor = {
 
 };
 
-declare global {
-  var Transform3D: Transform3DConstructor;
-}
-
 export interface Transform3D {
   basis: Basis;
   origin: Vector3;
@@ -34,6 +30,12 @@ export interface Transform3D {
   isEqualApprox(xform_: Transform3D): boolean;
   isFinite(): boolean;
 
+}
+
+declare global {
+  namespace Godot {
+    var Transform3D: Transform3DConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

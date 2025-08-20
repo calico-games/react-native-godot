@@ -16,11 +16,11 @@
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-godot": "file:../package"
+    "react-native-godot": "link:../package/"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@types/react": "~19.0.10",
+    "@types/react": "19.0.0",
     "expo-build-properties": "~0.14.8",
     "glob-to-regexp": "^0.4.1",
     "typescript": "~5.8.3"

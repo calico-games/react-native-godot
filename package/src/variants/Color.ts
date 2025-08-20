@@ -11,10 +11,6 @@ type ColorConstructor = {
 
 };
 
-declare global {
-  var Color: ColorConstructor;
-}
-
 export interface Color {
   r: number;
   g: number;
@@ -45,6 +41,12 @@ export interface Color {
   fromHsv(h_: number, s_: number, v_: number, alpha_: number): Color;
   fromRgbe9995(rgbe_: number): Color;
 
+}
+
+declare global {
+  namespace Godot {
+    var Color: ColorConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

@@ -12,10 +12,6 @@ type BasisConstructor = {
 
 };
 
-declare global {
-  var Basis: BasisConstructor;
-}
-
 export interface Basis {
   x: Vector3;
   y: Vector3;
@@ -37,6 +33,12 @@ export interface Basis {
   getRotationQuaternion(): Quaternion;
   fromScale(scale_: Vector3): Basis;
 
+}
+
+declare global {
+  namespace Godot {
+    var Basis: BasisConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

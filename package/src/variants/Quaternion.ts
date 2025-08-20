@@ -13,10 +13,6 @@ type QuaternionConstructor = {
 
 };
 
-declare global {
-  var Quaternion: QuaternionConstructor;
-}
-
 export interface Quaternion {
   x: number;
   y: number;
@@ -41,6 +37,12 @@ export interface Quaternion {
   getAxis(): Vector3;
   getAngle(): number;
 
+}
+
+declare global {
+  namespace Godot {
+    var Quaternion: QuaternionConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

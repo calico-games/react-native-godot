@@ -4,30 +4,51 @@
 
 <br />
 
-Bring **Godot** to **React Native** 🔮.
-Create immersive 3D experiences or interactive games directly within React Native, allowing for high-performance graphics and responsive interactions.
+# React Native Godot
+
+Bring **Godot** to **React Native** 🔮. Create immersive 3D experiences or interactive games directly within React Native, allowing for high-performance graphics and responsive interactions.
 
 [![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
 [![godot engine](https://img.shields.io/badge/Godot-4.4.1-blue)](https://godotengine.org/download)
 
-## Screenshots 📸
+## Table of Contents
+
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Device Support](#device-support)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+  - [Godot Variants](#godot-variants)
+  - [Runtime GDScript & Node Creation](#runtime-gdscript-node-creation)
+  - [Scene Node Access](#scene-node-access)
+  - [React Native ↔ Godot Communication](#react-native-godot-communication)
+- [Project Setup](#project-setup)
+  - [Importing Godot Projects](#importing-godot-projects)
+  - [Metro Configuration](#metro-configuration)
+- [Limitations & Known Issues](#limitations-known-issues)
+- [Contributing](#contributing)
+- [License](#license)
+
+## <a id="screenshots"></a>Screenshots 📸
 
 [<img src="screenshots/screenshot1.jpeg" alt="Multiple Cubes demo" align="center" width="150" hspace="2" vspace="10">](screenshots/screenshot1.jpeg)
 [<img src="screenshots/screenshot2.jpeg" alt="Earth demo" align="center" width="150" hspace="2" vspace="10">](screenshots/screenshot2.jpeg)
 
-### Features 🚀
+## <a id="features"></a>Features 🚀
 
-* 🏎️ Native C++ JSI performance
-* 🔥 GPU-accelerated by Metal and OpenGL/Vulkan
-* ✅ Supports old and new arch
-* 🙂 Supports Godot Variants in React Native
-* 🧨 Call GDScript methods in React Native
-* 📦 Easy import of your Godot projects
+- 🏎️ **Native C++ JSI performance** - Direct JavaScript to native bindings
+- 🔥 **GPU-accelerated rendering** - Metal (iOS) and OpenGL/Vulkan support
+- ✅ **Full React Native compatibility** - Supports old and new architecture
+- 🎮 **Complete Godot integration** - Access all Godot variants and features
+- 🧙‍♂️ **Runtime GDScript compilation** - Create and execute scripts dynamically
+- 📦 **Easy project import** - Simple workflow to bring Godot projects to RN
+- 🔄 **Bidirectional communication** - React Native ↔ Godot messaging
 
-## Device Support 📱
+## <a id="device-support"></a>Device Support 📱
 
-iOS support is implemented, full support for Android is almost ready.
-We'll ship that soon 😊
+iOS support is implemented, full Android support is coming soon.
 
 | Platform         | Supported |
 | ---------------- | --------- |
@@ -36,233 +57,413 @@ We'll ship that soon 😊
 | Android Device   | 🚧        |
 | Android Emulator | 🚧        |
 
-## Requirements 🥸
+## <a id="requirements"></a>Requirements 🥸
 
-* Godot 4.4.1 ([https://godotengine.org/](https://godotengine.org/))
+- Godot 4.4.1 ([https://godotengine.org/](https://godotengine.org/))
+- React Native 0.70+
+- iOS 12.0+ / Android API 21+
 
-## Installation 🚀
+## <a id="installation"></a>Installation 🚀
 
-```sh
+```bash
 npm install react-native-godot
-
-or
-
+# or
 yarn add react-native-godot
 ```
 
-## Usage 👇
+## <a id="quick-start"></a>Quick Start 👇
 
-Take a look at the `example` folder for a full implem 👀.
+### 1. Setup GodotProvider
 
-### React Native <-> Godot Communication 📡
-
-You can send messages from React Native to Godot and receive messages from Godot in React Native.
-
-* **React Native -> Godot**: You can send messages from React Native to Godot using the `emitMessage` method.
-* **Godot -> React Native**: You can receive messages from Godot in React Native using the `onMessage` prop.
+Wrap your app with `GodotProvider` to initialize Godot properly:
 
 ```tsx
-// ⚠️ IMPORTANT ⚠️
-// GodotProvider is required to initalize Godot properly
-// (See in the example folder for more details)
-//
-// <GodotProvider>
-//    <Example />
-// <GodotProvider/>
-//
-// It should be at the root of your app.
-// The highest level is recommended. e.g. App.tsx
+// App.tsx
+import React from 'react';
+import { GodotProvider } from 'react-native-godot';
+import MyGameScreen from './MyGameScreen';
 
-import React, {useRef} from 'react';
-import {GodotView, GodotProvider, useGodot} from 'react-native-godot';
+export default function App() {
+  return (
+    <GodotProvider>
+      <MyGameScreen />
+    </GodotProvider>
+  );
+}
+```
 
-const Example = () => {
- const godotRef = useRef<GodotView>(null);
- const {Vector3, Vector2} = useGodot(); 
+### 2. Create your game component
 
-  // Call gdsript method from React Native
-  useEffect(() => {  
-    if (!godotRef.current || !godotRef.current?.isReady) {
+```tsx
+// MyGameScreen.tsx
+import React, { useEffect, useState } from 'react';
+import { GodotView, useGodot, useGodotRef } from 'react-native-godot';
+
+const MyGameScreen = () => {
+  const godotRef = useGodotRef();
+  const { Vector3, Vector2 } = useGodot();
+  const [isGodotReady, setIsGodotReady] = useState(false);
+
+  useEffect(() => {
+    if (!isGodotReady || !godotRef.current?.isReady) {
       return;
     }
 
-    // Emit a message to Godot from React Native
-    godotRef.current?.emitMessage({
-      message: 'Hello from React Native!',
-      position: Vector3(1, 2, 3),
+    // Use Godot variants
+    const position = Vector3(1, 2, 3);
+    console.log('Position Y:', position.y);
+
+    // Get nodes from your scene
+    const playerNode = godotRef.current.getRoot()?.getNode('Player');
+    playerNode?.call('jump', 10);
+
+    // Send data to Godot
+    godotRef.current.emitMessage({
+      type: 'player_spawn',
+      position: position,
+      health: 100
     });
 
-    // Use Godot Vector3 and Vector2 variants
-    // All methods and properties are available too :)
-    console.log('Vector3 y:', Vector3(1, 2, 3).y);
-    console.log('Length', Vector2(3, 1).length());
-  
-    // Retrieve a node from your scene
-    const node = godotRef.current?.getRoot()?.getNode('MySuperNode');
-    if (!node) {
-      return;
-    }
-
-    // Call method `hello_world` from the gdscript attached to the node in your scene
-    node.hello_world();
-
-    // You can also call your method and return a value with any supported types
-    const something = node.method_that_returns_something();
-    console.log('Something:', something);
-  }, [godotRef.current?.isReady]);
+  }, [isGodotReady]);
 
   return (
     <GodotView
       ref={godotRef}
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       source={require('./assets/game.pck')}
       scene="res://main.tscn"
-      {/* Receive messages from Godot */}
-      onMessage={(message) => console.log('Godot message:', message)}
+      onReady={() => setIsGodotReady(true)}
+      onMessage={(instance, message) => {
+        console.log('Message from Godot:', message);
+      }}
     />
   );
 };
+
+export default MyGameScreen;
 ```
 
-### Godot implementation (GDScript) 🧙‍♂️
+## <a id="api-reference"></a>API Reference
 
-```gdscript
-# This class is a demonstration of GDScript with React Native.
+### <a id="godot-variants"></a>Godot Variants 🍭
 
+All Godot variant types are available with full method and property support:
+
+**Available Types:**
+`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`
+
+**Usage:**
+
+```tsx
+const { Vector3, Color, Transform3D } = useGodot();
+
+// Create variants
+const position = Vector3(1, 2, 3);
+const color = Color(1, 0, 0, 1); // Red
+const transform = Transform3D();
+
+// Use methods and properties
+console.log('Distance:', position.length());
+console.log('Normalized:', position.normalized());
+console.log('Red component:', color.r);
+
+// Automatic conversion for primitives
+const data = {
+  score: 100,           // int
+  name: "Player",       // String
+  active: true,         // bool
+  items: [1, 2, 3],    // Array
+  stats: { hp: 100 }   // Dictionary
+};
+```
+
+Complete documentation: [Godot Variant Types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types)
+
+### <a id="runtime-gdscript-node-creation"></a>Runtime GDScript & Node Creation 🧙‍♂️
+
+Create and compile GDScript at runtime, then attach to dynamically created nodes:
+
+```tsx
+const { Script, Node } = useGodot();
+
+// Create and compile a script
+const script = Script();
+const success = script.setSourceCode(`
 extends Node
 
-func _ready() -> void:
-  if Engine.has_singleton("ReactNative"): # Always check if the ReactNative singleton exists
-    Engine.get_singleton("ReactNative").on_message(_on_message)
+@onready var health = 100
 
-func _on_message(message: Dictionary) -> void:
-  print("React Native message:", message)
+func _ready():
+    print("Dynamic script loaded!")
 
-func _input(event: InputEvent) -> void:    
-  if "position" not in event:
-    return
+func take_damage(amount: int) -> int:
+    health -= amount
+    return health
 
-  var adjusted_position = adjust_for_window(event.position)
+func heal(amount: int):
+    health += amount
+    print("Healed for ", amount, " HP")
+`);
 
-  if Engine.has_singleton("ReactNative"):
-    # Emit a message to React Native
-    Engine.get_singleton("ReactNative").emit_message({
-      "message": "Input event position",
-      "pos": adjusted_position,
-    })
-
-func hello_world() -> void:
-  print("Hello World!")
-
-func method_that_returns_something() -> int:
-  return 42
-
-## This function is used to adjust the screen position for the window.
-func adjust_for_window(pos: Vector2) -> Vector2:
-  var window = get_viewport().get_window()
-  var window_id = window.get_window_id()
-
-  if window_id == DisplayServer.MAIN_WINDOW_ID or window_id == DisplayServer.INVALID_WINDOW_ID:
-    return pos
-
-  var window_position = Vector2()
-
-  if Engine.has_singleton("ReactNative"):
-    window_position = Engine.get_singleton("ReactNative").get_subwindow_position(window_id)
-
-  return Vector2(
-    pos.x + window_position.x,
-    pos.y + window_position.y
-  )
+if (success) {
+  // Create node and attach script
+  const dynamicNode = Node();
+  dynamicNode.setScript(script);
+  dynamicNode.setName("DynamicPlayer");
+  
+  // Add to scene
+  godotRef.current?.getRoot()?.addChild(dynamicNode);
+  
+  // Call script methods
+  const remainingHealth = dynamicNode.call("take_damage", 25);
+  console.log('Health remaining:', remainingHealth);
+  
+  // Alternative syntax with TypeScript casting
+  (dynamicNode as any).heal(10);
+}
 ```
 
-## Godot Variants 🍭
+#### Script API
 
-Godot variants are available in React Native, here is the list:
-`AABB | Basis | Color | Plane | Projection | Quaternion | Rect2 | Rect2i | Transform2D | Transform3D | Vector2 | Vector2i | Vector3 | Vector3i | Vector4 | Vector4i`.
+| Method | Description |
+|--------|-------------|
+| `Script()` | Create a new empty script |
+| `setSourceCode(source: string): boolean` | Set and compile GDScript source code |
 
-For primitives like `int`, `float`, `bool`, `dictionary`, `array`, etc, you can use normal JS types and it will be automatically converted to Godot variants and vice versa.
+#### Node API
 
-All methods and properties are available too, for instance, you can use `Vector3(1, 2, 3).length()`.
-Complete documentation is available at [https://docs.godotengine.org/en/stable/classes/index.html#variant-types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types).
+| Method | Description |
+|--------|-------------|
+| `Node()` | Create a new empty node |
+| `getNode(path: string): Node \| null` | Get child node by path |
+| `getParent(): Node \| null` | Get parent node |
+| `getChildren(): Node[]` | Get all child nodes |
+| `getChildCount(): number` | Get number of child nodes |
+| `addChild(child: Node)` | Add a child node |
+| `setName(name: string)` | Set the node's name |
+| `setScript(script: Script)` | Attach a script to the node |
+| `call(method: string, ...args: any[]): any` | Call a method defined in the attached script |
 
-## Access any Godot Nodes from React Native 🎯
+**💡 Tip:** For better TypeScript ergonomics, you can call script methods directly using `(node as any).methodName(args)` instead of `node.call("methodName", args)`.
 
-You can retrieve a node from your scene in React Native and call methods on it.
+### <a id="scene-node-access"></a>Scene Node Access 🎯
 
-Current supported methods for a Node are:
+Access and interact with nodes from your loaded Godot scenes:
 
-* getNode(name: string): Node | null
-* getParent(): Node | null
-* getChildren(): Node[]
-* getChildCount(): number
+```tsx
+useEffect(() => {
+  if (!godotRef.current?.isReady) return;
 
-(+ Any method you've defined in your gdscript 😌)
+  // Get the root node
+  const root = godotRef.current.getRoot();
+  
+  // Navigate the scene tree
+  const player = root?.getNode('Player');
+  const ui = root?.getNode('UI/HealthBar');
+  
+  // Access node hierarchy
+  const parent = player?.getParent();
+  const children = player?.getChildren();
+  const siblingCount = parent?.getChildCount();
+  
+  // Call methods defined in the node's GDScript
+  player?.call('set_health', 100);
+  ui?.call('update_display', 100, 100);
+  
+  // Alternative direct method calls
+  (player as any)?.jump(15);
+  (ui as any)?.show_damage_effect();
+  
+}, [godotRef.current?.isReady]);
+```
 
-## Import your Godot Project (How to) 📥
+### <a id="react-native-godot-communication"></a>React Native ↔ Godot Communication 📡
 
-* To import your **Godot project** into React Native, you need to **generate a pck file** that basically packs up all your game assets, scripts etc.
-It's a convenient way to pack your game into a single file.
+#### React Native → Godot
 
-* First, you need to add a `export_presets.cfg` in the directory of your Godot project.
-We provide a working example of this file at the root of this repository.
+Send messages from React Native to your Godot scripts:
 
-* After that, you're now able to generate a pck file, just run `./gen-pck PROJECT_FOLDER_PATH`.
-Be sure you have `/Applications/Godot.app` set on your machine, if you're using another path or another OS than macOS, just modify this very simple shell at your convenience.
+```tsx
+// Send structured data to Godot
+godotRef.current?.emitMessage({
+  type: 'player_action',
+  action: 'attack',
+  target: 'enemy_1',
+  position: Vector3(10, 0, 5),
+  damage: 50
+});
+```
 
-* Then, you just need to move the pck file in your assets folder.
+#### Godot → React Native
 
-* One last important thing, don't forget to add a `project.godot` in your XCode project, see in the example folder for more details.
+Receive messages in React Native from Godot scripts:
 
-## Metro Config 🚇
+```tsx
+<GodotView
+  onMessage={(instance, message) => {
+    console.log('Received from Godot:', message);
+    
+    // Handle different message types
+    switch (message.type) {
+      case 'game_over':
+        showGameOverScreen(message.score);
+        break;
+      case 'level_complete':
+        advanceToNextLevel();
+        break;
+      case 'item_collected':
+        updateInventory(message.item);
+        break;
+    }
+  }}
+/>
+```
 
-* You need to add `pck` in your `assetExts` in `metro.config.js` in order to treat `.pck` files as assets.
+#### Godot Script Implementation
+
+```gdscript
+extends Node
+
+@onready var rn_singleton = Engine.get_singleton("ReactNative")
+
+func _ready():
+    if rn_singleton:
+        # Listen for messages from React Native
+        rn_singleton.on_message(_on_react_native_message)
+
+func _on_react_native_message(message: Dictionary):
+    print("Message from React Native: ", message)
+    
+    match message.type:
+        "player_action":
+            handle_player_action(message)
+        "game_state_change":
+            update_game_state(message.state)
+
+func send_to_react_native(data: Dictionary):
+    if rn_singleton:
+        rn_singleton.emit_message(data)
+
+func _on_enemy_defeated():
+    send_to_react_native({
+        "type": "enemy_defeated",
+        "enemy_id": "goblin_1",
+        "exp_gained": 50
+    })
+```
+
+## <a id="project-setup"></a>Project Setup
+
+### <a id="importing-godot-projects"></a>Importing Godot Projects 📥
+
+To use your existing Godot project in React Native:
+
+1. **Add export preset configuration**
+
+  Create `export_presets.cfg` in your Godot project directory:
+
+  ```ini
+  [preset.0]
+
+  name="main"
+  platform="iOS"
+  runnable=true
+  advanced_options=false
+  dedicated_server=false
+  custom_features=""
+  export_filter=""
+  include_filter="project.godot"
+  exclude_filter=""
+  export_path=""
+  encryption_include_filters=""
+  encryption_exclude_filters=""
+  encrypt_pck=false
+  encrypt_directory=false
+  script_export_mode=2
+
+  [preset.0.options]
+
+  export/distribution_type=1
+  binary_format/architecture="universal"
+  binary_format/embed_pck=false
+  custom_template/debug=""
+  custom_template/release=""
+  debug/export_console_wrapper=0
+  display/high_res=true
+  ```
+
+2. **Generate PCK file**
+
+  Run the provided script (modify path for your OS):
+
+  ```bash
+  ./gen-pck PROJECT_FOLDER_PATH
+  ```
+
+3. **Add to React Native project**
+
+  Move the generated `.pck` file to your React Native `assets` folder.
+
+4. **Include project.godot in iOS**
+
+  Add your `project.godot` file to your Xcode project bundle.
+
+### <a id="metro-configuration"></a>Metro Configuration 🚇
+
+Add PCK file support to your `metro.config.js`:
 
 ```js
-// Treat `.pck` files as assets
-assetExts: [...assetExts, 'pck'],
+const config = getDefaultConfig(__dirname);
+
+// Add pck files as assets
+config.resolver.assetExts.push('pck');
+
+module.exports = config;
 ```
 
-## Limitations & Known Issues 🚧
+## <a id="limitations-known-issues"></a>Limitations & Known Issues 🚧
 
-* When importing a texture or 3D model, be sure you don't import them as `VRAM Compressed`, for some reason when exporting the pck file, it doesn't import the assets. Might be a mistake from our side.... (TBD) 😅
+### Texture Import Settings
+
+When importing textures or 3D models, avoid using `VRAM Compressed` format as it may not export properly in PCK files.
 
 [<img src="screenshots/screenshot3.png" alt="VRAM Compressed" align="center" width="200" hspace="2" vspace="10">](screenshots/screenshot3.png)
 
-* **PCK Asset Swapping**: For now, you can't swap the pck asset at runtime properly, you need to reopen the app to load a new pck asset. It seems to be a limitation of the Godot engine itself, but we're investigating this as it would be super useful to debug on device in almost real-time.
+### PCK Asset Swapping
 
-## TODO 📝
+Currently, you cannot swap PCK assets at runtime. You need to restart the app to load a new PCK file. This appears to be a Godot engine limitation that we're investigating.
 
-* [x] iOS support
-* [ ] Android support
-* [x] Improve library size
-* [x] Add support for all Godot variants
-* [ ] Investigate PCK asset swapping
-* [x] Add support for more Godot features
+### Platform Support
 
-## Contributing 🤝
+- iOS Simulator is not supported due to architecture differences
+- Android support is in development
 
-We're open to any contributions. Feel free to open an issue if you want to help us improve this library.
+## <a id="contributing"></a>Contributing 🤝
 
-All the interesting stuff is located in a private repository so if you want to contribute, just send us an email at `team@calico.games`.
-You should have previous experiences of building the Godot Engine yourself, C++, and building blazing fast React Native libraries is a plus.
-[Bazel](https://github.com/bazelbuild/bazel) is also used internally to build the library fyk.
+We welcome contributions! The core development happens in a private repository, but if you'd like to contribute:
 
-## Copyright / License 👨‍⚖️
+1. Open an issue to discuss your idea
+2. Contact us at `team@calico.games` for access to the private repo
+3. Experience with Godot Engine, C++, and React Native is preferred
+4. Knowledge of [Bazel](https://github.com/bazelbuild/bazel) is a plus
 
-Copyright **Calico Games** 2024. All rights reserved.
+## <a id="license"></a>License 👨‍⚖️
 
-This library is released under a **Custom License** with the following conditions:
+**Copyright Calico Games 2024. All rights reserved.**
 
-* **Free for non-commercial use**: You may freely use this library for personal, educational, or open-source projects.
-* **Commercial use by revenue-generating entities**: Any company or individual with an annual revenue exceeding $50,000 must obtain a commercial license to use this library.
-* **No Redistribution Allowed**: This library cannot be redistributed, repackaged, or resold.
+This library is released under a **Custom License**:
 
-PS: We are pretty flexible atm and we would like to also support the Godot Foundation by giving them a share of the revenue generated by this library.
+- **✅ Free for non-commercial use** - Personal, educational, or open-source projects
+- **💼 Commercial use requires license** - Companies/individuals with >$50,000 annual revenue need a commercial license
+- **❌ No redistribution** - Cannot be redistributed, repackaged, or resold
 
-For commercial licensing inquiries, please contact us at `team@calico.games`.
+We support the Godot Foundation by sharing revenue from commercial licenses.
 
-## Credits 🙏
+For commercial licensing: `team@calico.games`
 
-* Special thanks to all the contributors of the [Godot Engine](https://github.com/godotengine/godot).
-* A big shoutout to [Migeran](https://github.com/migeran) that helped us a lot to build this library.
+---
+
+## <a id="credits"></a>Credits 🙏
+
+- Special thanks to the [Godot Engine](https://github.com/godotengine/godot) contributors
+- Huge appreciation to [Migeran](https://github.com/migeran) for their invaluable help

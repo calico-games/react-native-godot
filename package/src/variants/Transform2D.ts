@@ -11,10 +11,6 @@ type Transform2DConstructor = {
 
 };
 
-declare global {
-  var Transform2D: Transform2DConstructor;
-}
-
 export interface Transform2D {
   x: Vector2;
   y: Vector2;
@@ -39,6 +35,12 @@ export interface Transform2D {
   isEqualApprox(xform_: Transform2D): boolean;
   isFinite(): boolean;
 
+}
+
+declare global {
+  namespace Godot {
+    var Transform2D: Transform2DConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

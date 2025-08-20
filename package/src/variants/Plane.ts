@@ -13,10 +13,6 @@ type PlaneConstructor = {
 
 };
 
-declare global {
-  var Plane: PlaneConstructor;
-}
-
 export interface Plane {
   normal: Vector3;
   d: number;
@@ -30,6 +26,12 @@ export interface Plane {
   project(point_: Vector3): Vector3;
   intersect3(b_: Plane, c_: Plane): any;
 
+}
+
+declare global {
+  namespace Godot {
+    var Plane: PlaneConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

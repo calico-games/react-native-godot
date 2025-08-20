@@ -10,10 +10,6 @@ type AABBConstructor = {
 
 };
 
-declare global {
-  var AABB: AABBConstructor;
-}
-
 export interface AABB {
   position: Vector3;
   size: Vector3;
@@ -44,6 +40,12 @@ export interface AABB {
   intersectsSegment(from_: Vector3, to_: Vector3): any;
   intersectsRay(from_: Vector3, dir_: Vector3): any;
 
+}
+
+declare global {
+  namespace Godot {
+    var AABB: AABBConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

@@ -10,10 +10,6 @@ type Vector4Constructor = {
 
 };
 
-declare global {
-  var Vector4: Vector4Constructor;
-}
-
 export interface Vector4 {
   x: number;
   y: number;
@@ -53,6 +49,12 @@ export interface Vector4 {
   max(with_: Vector4): Vector4;
   maxf(with_: number): Vector4;
 
+}
+
+declare global {
+  namespace Godot {
+    var Vector4: Vector4Constructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

@@ -10,10 +10,6 @@ type Vector2Constructor = {
 
 };
 
-declare global {
-  var Vector2: Vector2Constructor;
-}
-
 export interface Vector2 {
   x: number;
   y: number;
@@ -66,6 +62,12 @@ export interface Vector2 {
   maxf(with_: number): Vector2;
   fromAngle(angle_: number): Vector2;
 
+}
+
+declare global {
+  namespace Godot {
+    var Vector2: Vector2Constructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module

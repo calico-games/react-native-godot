@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import withPreventGoBack from '@/Utils/withPreventGoBack';
-import {Godot, GodotProvider, GodotView} from 'react-native-godot';
+import {GodotProvider, GodotView} from 'react-native-godot';
 
 import Home from '@/Screens/Home.tsx';
 import CubesExample from '@/Screens/CubesExample';
@@ -96,7 +96,7 @@ const Root = () => {
               )}
               {!testingNavigation.current && (
                 <View style={{flex: 1, backgroundColor: 'black'}}>
-                  <Godot
+                  <GodotView
                     style={{flex: 1}}
                     source={require('@/assets/cube.pck')}
                   />

@@ -15,10 +15,6 @@ type ProjectionConstructor = {
 
 };
 
-declare global {
-  var Projection: ProjectionConstructor;
-}
-
 export interface Projection {
   x: Vector4;
   y: Vector4;
@@ -51,6 +47,12 @@ export interface Projection {
   getPixelsPerMeter(forPixelWidth_: number): number;
   getLodMultiplier(): number;
 
+}
+
+declare global {
+  namespace Godot {
+    var Projection: ProjectionConstructor;
+  }
 }
 
 export {};  // Ensure this file is treated as a module
