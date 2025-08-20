@@ -306,15 +306,6 @@ const transform = Transform3D();
 console.log('Distance:', position.length());
 console.log('Normalized:', position.normalized());
 console.log('Red component:', color.r);
-
-// Automatic conversion for primitives
-const data = {
-  score: 100,           // int
-  name: "Player",       // String
-  active: true,         // bool
-  items: [1, 2, 3],    // Array
-  stats: { hp: 100 }   // Dictionary
-};
 ```
 
 Complete documentation: [Godot Variant Types](https://docs.godotengine.org/en/stable/classes/index.html#variant-types)
