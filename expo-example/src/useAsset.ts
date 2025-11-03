@@ -1,6 +1,6 @@
 import {useEffect, useState, useMemo} from 'react';
 import {NativeModules, Platform} from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import {Paths, File} from 'expo-file-system';
 
 function getMetroHost(): string {
   if (!__DEV__) {
@@ -51,35 +51,31 @@ export function useAsset(assetPath: string): string | null {
           if (Platform.OS === 'ios') {
             // On iOS, the plugin copies files to the app bundle
             // They can be accessed via the main bundle path
-            const bundlePath = `${FileSystem.bundleDirectory}${normalizedPath.split('/').pop()}`;
-            const fileInfo = await FileSystem.getInfoAsync(bundlePath);
-            
-            if (fileInfo.exists) {
-              setAssetUri(bundlePath);
+            const fileName = normalizedPath.split('/').pop();
+            const file = new File(`${Paths.bundle}${fileName}`);
+
+            if (file.exists) {
+              setAssetUri(file.uri);
             } else {
-              console.error('Asset not found in iOS bundle:', bundlePath);
+              console.error('Asset not found in iOS bundle:', file.uri);
             }
           } else if (Platform.OS === 'android') {
             // On Android, assets are in the APK
             // The plugin copies them to the assets folder
             // We need to copy them to a readable location first
             const fileName = normalizedPath.split('/').pop();
-            const localUri = `${FileSystem.documentDirectory}${fileName}`;
-            
+            const localFile = new File(`${Paths.document}${fileName}`);
+
             try {
               // Check if already copied
-              const fileInfo = await FileSystem.getInfoAsync(localUri);
-              
-              if (!fileInfo.exists) {
+              if (!localFile.exists) {
                 // Copy from Android assets to document directory
                 // This requires the asset to be in android/app/src/main/assets/
-                await FileSystem.copyAsync({
-                  from: `${FileSystem.bundleDirectory}../../assets/${fileName}`,
-                  to: localUri
-                });
+                const sourceFile = new File(`${Paths.bundle}../../assets/${fileName}`);
+                sourceFile.copy(localFile);
               }
-              
-              setAssetUri(localUri);
+
+              setAssetUri(localFile.uri);
             } catch (error) {
               // Fallback: try direct asset:// URI (works for some file types)
               const assetUri = `asset:///${fileName}`;
