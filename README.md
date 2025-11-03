@@ -10,6 +10,7 @@ Bring **Godot** to **React Native** 🔮. Create immersive 3D experiences or int
 
 [![npm version](https://img.shields.io/npm/v/react-native-godot.svg?style=flat)](https://www.npmjs.com/package/react-native-godot)
 [![godot engine](https://img.shields.io/badge/Godot-4.5-blue)](https://godotengine.org/download)
+[![Expo SDK](https://img.shields.io/badge/Expo_SDK-54-000020?style=flat&logo=expo&logoColor=white)](https://expo.dev/)
 
 ## Table of Contents
 
