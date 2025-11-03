@@ -580,7 +580,7 @@ We welcome contributions! The core development happens in a private repository, 
 
 ## <a id="license"></a>License 👨‍⚖️
 
-MIT License. See [LICENSE](LICENSE.md) for details.
+MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
