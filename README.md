@@ -60,9 +60,9 @@ iOS support is implemented, full Android support is coming soon.
 
 ## <a id="requirements"></a>Requirements 🥸
 
-- Godot 4.4.1 ([https://godotengine.org/](https://godotengine.org/))
-- React Native 0.70+
-- iOS 12.0+ / Android API 21+
+- Godot 4.5 ([https://godotengine.org/](https://godotengine.org/))
+- React Native 0.80+
+- iOS 15.1+ / Android API 21+
 
 ## <a id="installation"></a>Installation 🚀
 
@@ -580,17 +580,7 @@ We welcome contributions! The core development happens in a private repository, 
 
 ## <a id="license"></a>License 👨‍⚖️
 
-**Copyright Calico Games 2024. All rights reserved.**
-
-This library is released under a **Custom License**:
-
-- **✅ Free for non-commercial use** - Personal, educational, or open-source projects
-- **💼 Commercial use requires license** - Companies/individuals with >$50,000 annual revenue need a commercial license
-- **❌ No redistribution** - Cannot be redistributed, repackaged, or resold
-
-We support the Godot Foundation by sharing revenue from commercial licenses.
-
-For commercial licensing: `team@calico.games`
+MIT License. See [LICENSE](LICENSE.md) for details.
 
 ---
 

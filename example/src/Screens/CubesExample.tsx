@@ -39,15 +39,15 @@ const CubesExample: React.FC = _props => {
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <GodotView
-        style={styles.cube}
+        style={[styles.cube, {backgroundColor: 'red'}]}
         source={require('@/assets/cube.pck')}
       />
       <GodotView
-        style={styles.cube}
+        style={[styles.cube, {backgroundColor: 'green'}]}
         source={require('@/assets/cube.pck')}
       />
       <GodotView
-        style={styles.cube}
+        style={[styles.cube, {backgroundColor: 'blue'}]}
         source={require('@/assets/cube.pck')}
       />
     </View>

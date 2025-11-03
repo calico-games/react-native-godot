@@ -10,18 +10,8 @@
 // see also this discussion:
 // https://github.com/brodybits/create-react-native-module/issues/232
 
-const {getDefaultConfig} = require('@react-native/metro-config');
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 const path = require('path');
-const {mergeConfig} = require('metro-config');
-const exclusionList = require('metro-config/src/defaults/exclusionList');
-const glob = require('glob-to-regexp');
-
-function getBlacklist() {
-  const nodeModuleDirs = [
-    glob(`${path.resolve(__dirname, '../package')}/node_modules/*`),
-  ];
-  return exclusionList(nodeModuleDirs);
-}
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -29,22 +19,28 @@ const {
   resolver: {assetExts},
 } = defaultConfig;
 
+const packagePath = path.resolve(__dirname, '../package');
+
 const config = {
   // workaround for an issue with symlinks encountered starting with
   // metro@0.55 / React Native 0.61
-  // (not needed with React Native 0.60 / metro@0.54)
   resolver: {
-    extraNodeModules: new Proxy(
-      {},
-      { get: (_, name) => path.resolve('.', 'node_modules', name) }
-    ),
-    // /dist\/.*/
-    blacklistRE: getBlacklist(),
-    // [ADD THIS] Treat `.pck` files as assets
+    // Ensure React and React Native are resolved from example's node_modules
+    extraNodeModules: {
+      'react': path.resolve(__dirname, 'node_modules/react'),
+      'react-native': path.resolve(__dirname, 'node_modules/react-native'),
+    },
+    // Block only React and React Native from the symlinked package directory
+    blockList: [
+      new RegExp(`${packagePath.replace(/[/\\]/g, '[/\\\\]')}/node_modules/react/`),
+      new RegExp(`${packagePath.replace(/[/\\]/g, '[/\\\\]')}/node_modules/react-native/`),
+      new RegExp(`${packagePath.replace(/[/\\]/g, '[/\\\\]')}/node_modules/@react-native/`),
+    ].concat(defaultConfig.resolver.blockList || []),
+    // Treat `.pck` files as assets
     assetExts: [...assetExts, 'pck'],
   },
   // Quick workaround for another issue with symlinks
-  watchFolders: [path.resolve('.'), path.resolve('../package')],
+  watchFolders: [path.resolve('.'), packagePath],
 };
 
 module.exports = mergeConfig(defaultConfig, config);

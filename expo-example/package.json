@@ -4,31 +4,28 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web",
+    "android": "expo run:android --device",
+    "ios": "expo run:ios --device",
     "prebuild": "expo prebuild",
     "prebuild:clean": "expo prebuild --clean",
-    "prebuild:ios": "npx expo prebuild --platform ios --clean"
+    "prebuild:ios": "npx expo prebuild --platform ios --clean",
+    "clean-cache": "rm -rf node_modules/react-native-godot/libs/ios/ReactNativeGodot.xcframework && rm -rf ios/Pods && rm -rf ~/Library/Developer/Xcode/DerivedData/ReactNativeGodotExpoExample-*",
+    "reinstall": "npm run clean-cache && npx pod-install"
   },
   "dependencies": {
-    "expo": "~53.0.0",
-    "expo-asset": "~11.1.7",
-    "expo-status-bar": "~2.2.3",
-    "react": "19.0.0",
-    "react-native": "0.79.5",
+    "expo": "54.0.21",
+    "expo-asset": "12.0.9",
+    "expo-status-bar": "3.0.8",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
     "react-native-godot": "link:../package/"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@types/react": "19.0.0",
-    "expo-build-properties": "~0.14.8",
-    "glob-to-regexp": "^0.4.1",
-    "typescript": "~5.8.3"
-  },
-  "resolutions": {
-    "react": "19.0.0",
-    "react-native": "0.79.5"
+    "@types/react": "~19.1.10",
+    "expo-build-properties": "1.0.9",
+    "glob-to-regexp": "0.4.1",
+    "typescript": "~5.9.2"
   },
   "private": true
 }

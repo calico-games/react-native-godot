@@ -22,16 +22,18 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
     "CLANG_CXX_LIBRARY" => "libc++",
-    'DEFINES_MODULE' => 'YES'
+    'DEFINES_MODULE' => 'YES',
+    # MetalFX is only available on iOS 16+ devices, not simulator
+    'OTHER_LDFLAGS[sdk=iphoneos*]' => '-weak_framework MetalFX'
   }
-  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then 
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
     s.compiler_flags = "-DRCT_NEW_ARCH_ENABLED=1"
   end
 
   s.dependency 'React-Core'
   s.dependency 'React-CoreModules'
 
-  s.frameworks = ['MetalKit', 'MetalFX']
+  s.frameworks = ['MetalKit']
 
   s.ios.vendored_frameworks = [
     'libs/ios/ReactNativeGodot.xcframework',

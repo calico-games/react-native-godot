@@ -1,6 +1,6 @@
 {
   "name": "react-native-godot",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Bring Godot to React Native.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -47,16 +47,16 @@
     "url": "git+https://github.com/calico-games/react-native-godot.git"
   },
   "author": "Calico Games <seb@calico.games> (https://github.com/calico-games)",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/calico-games/react-native-godot",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "react": "^19.0.0",
-    "react-native": "^0.78.1",
+    "@types/react": "^19.1.0",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
     "react-native-builder-bob": "^0.39.0",
     "typescript": "5.0.4"
   },
